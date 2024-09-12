@@ -7,7 +7,7 @@ export default function Home() {
   const [category, setCategory] = useState([]);
   const { register, handleSubmit } = useForm();
   async function fetchCategory() {
-    const data = await fetch("http://localhost:3000/api/category");
+    const data = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/category`) 
     const c = await data.json();
     setCategory(c);
   }
@@ -17,7 +17,7 @@ export default function Home() {
   }, []);
 
   function createCategory(data) {
-    fetch("http://localhost:3000/api/category", {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE}api/category`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
