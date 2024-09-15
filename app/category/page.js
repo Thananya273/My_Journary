@@ -29,13 +29,22 @@ export default function Home() {
   return (
     <main>
       <form onSubmit={handleSubmit(createCategory)}>
-        <div className="grid grid-cols-2 gap-4 w-fit m-4">
-          <div>Category:</div>
+        <div className="grid grid-cols-2 gap-4 w-fit m-4 border-red-600 p-1 m-1">
+          <div>Category Name:</div>
           <div>
             <input
               name="name"
               type="text"
               {...register("name", { required: true })}
+              className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+          </div>
+          <div>Order:</div>
+          <div>
+            <input
+              name="order"
+              type="number"
+              {...register("order", { required: true })}
               className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             />
           </div>
@@ -51,11 +60,13 @@ export default function Home() {
       <div>
         <h1>Category {category.length}</h1>
         {category.map((category) => (
-          <div key={category._id}>
+          <ul>
+          <li key={category._id}>
             <Link href={`/product/category/${category._id}`} className="text-red-600">
-              {category.name}
+              {category.name} [{category.order}]
             </Link>
-          </div>
+          </li>
+          </ul>
         ))}
       </div>
     </main>
