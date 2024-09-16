@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <main>
       <form onSubmit={handleSubmit(createCategory)}>
-        <div className="grid grid-cols-2 gap-4 w-fit m-4 border-red-600 p-1 m-1">
+        <div className="Grid Grid-cols-2 gap-4 w-fit m-4 border-red-600 p-1 m-1">
           <div>Category Name:</div>
           <div>
             <input

@@ -48,7 +48,7 @@ export default function Home() {
     <div className="flex flex-row gap-4">
       <div className="flex-1 w-64 ">
         <form onSubmit={handleSubmit(createProduct)}>
-          <div className="grid grid-cols-2 gap-4 m-4 w-1/2">
+          <div className="Grid Grid-cols-2 gap-4 m-4 w-1/2">
             <div>Code:</div>
             <div>
               <input

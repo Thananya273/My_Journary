@@ -160,8 +160,8 @@ function createTrip(data) {
                   {new Date(trip.startDate).toLocaleDateString()} to {new Date(trip.endDate).toLocaleDateString()}
                 </Typography>
                 <Typography variant="body2">Note: {trip.note.join(", ") || "No notes listed"}</Typography>
-                <Link href={`/planner/trip/${trip._id}`} passHref>
-                  <Button variant="outlined" sx={{ mt: 2 }}>View Trip</Button>
+                <Link href={`/planner/${trip._id}`} passHref>
+                <Button variant="outlined" sx={{ mt: 2 }}>Add Planner</Button>
                 </Link>
               </CardContent>
             </Card>
