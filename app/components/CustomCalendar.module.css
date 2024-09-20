@@ -1,0 +1,18 @@
+/* CustomCalendar.module.css */
+.calendarContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px; /* Adjust as needed */
+}
+
+.calendar {
+  width: 100%; /* Set to 100% for full-width */
+  max-width: 2000px; /* Limit max width */
+  height: auto; /* Allow height to adjust based on content */
+  border: 1px solid #ffffff; /* Optional border for visibility */
+}
+
+.highlight {
+  background-color: lightblue !important; /* Change this to your preferred color */
+}

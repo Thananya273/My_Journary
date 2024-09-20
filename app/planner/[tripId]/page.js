@@ -1,60 +1,89 @@
 "use client";
+
 import { useState, useEffect } from 'react';
-import { Container, Typography } from '@mui/material';
-import TripCard from '@/app/components/TripCard';
+import { Container, Typography, Grid } from '@mui/material';
 import PlannerForm from '@/app/components/PlannerForm';
+import TripCard from '@/app/components/TripCard';
+import CustomCalendar from '@/app/components/Calendar';
 
 export default function PlannerPage({ params }) {
   const { tripId } = params;
   const [trip, setTrip] = useState(null);
   const [planners, setPlanners] = useState([]);
 
+  // Fetch trip details and planner data when the component mounts
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/trip/${tripId}`)
       .then(res => res.json())
-      .then(data => setTrip(data));
+      .then(data => {
+        console.log("Fetched Trip Data:", data); // Log trip data
+        setTrip(data);
+      });
     
     fetchPlanners();
   }, [tripId]);
 
+  // Fetch planners for this trip
   const fetchPlanners = () => {
     fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/planner?tripId=${tripId}`)
       .then(res => res.json())
-      .then(data => setPlanners(data));
+      .then(data => {
+        console.log("Fetched Planners:", data); // Log planners
+        setPlanners(data);
+      });
   };
 
-  const handleSavePlan = (plan) => {
+  // Handle save event from PlannerForm
+  const handleSavePlanner = (plannerData) => {
+    console.log("Saving Planner Data:", plannerData); // Log data
     fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/planner`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...plan, tripId }),
-    }).then(() => fetchPlanners());
+      body: JSON.stringify({ ...plannerData, tripId }),
+    })
+    .then(res => res.json())
+    .then(newPlanner => {
+      setPlanners(prevPlanners => [...prevPlanners, newPlanner]); // Append new plan
+    });
   };
 
-  if (!trip) return <p>Loading...</p>;
+  // Calculate the number of days for the trip
+  const calculateDays = () => {
+    if (!trip) return 0;
+    const start = new Date(trip.startDate);
+    const end = new Date(trip.endDate);
+    return Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;  // Calculate total days
+  };
 
-  // Calculate the number of days in the trip
-  const startDate = new Date(trip.startDate);
-  const endDate = new Date(trip.endDate);
-  const numDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1; // inclusive of start and end day
+  const totalDays = calculateDays();
 
   return (
     <Container sx={{ mt: 4, mb: 4 }}>
       {/* Trip Details */}
-      <Typography variant="h4" gutterBottom>{trip.name}</Typography>
-      {trip && <TripCard trip={trip} />}
+      {trip && (
+        <>
+          <Typography variant="h4" gutterBottom>{trip.name}</Typography>
+          <TripCard trip={trip} />
+          <CustomCalendar startDate={trip.startDate} endDate={trip.endDate} />
+        </>
+      )}
 
-      {/* Planner for each day */}
-      {Array.from({ length: numDays }).map((_, index) => {
-        const currentDay = new Date(startDate);
-        currentDay.setDate(startDate.getDate() + index);
+      {/* Planner Forms */}
+      <Typography variant="h5" sx={{ mt: 4 }}>Daily Plans</Typography>
+      {trip && Array.from({ length: totalDays }, (_, index) => {
+        const dayNumber = index + 1;
+        const savedPlanner = planners.find(planner => planner.day === dayNumber);
+
+        console.log(`Day ${dayNumber}:`, savedPlanner); // Log saved planner data
 
         return (
-          <PlannerForm
-            key={index}
-            day={index + 1}
-            onSave={handleSavePlan}
-          />
+          <div key={index}>
+            <PlannerForm
+              day={dayNumber}
+              initialData={savedPlanner}
+              onSave={handleSavePlanner}
+            />
+          </div>
         );
       })}
     </Container>

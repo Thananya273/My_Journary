@@ -3,13 +3,12 @@ import { useState } from 'react';
 import { Container, Grid, TextField, Button, Card, CardContent, Typography, MenuItem, Select } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
-export default function PlannerForm({ day, onSave }) {
-  const { register, handleSubmit, reset } = useForm();
-  const [howToGo, setHowToGo] = useState('');
+export default function PlannerForm({ day, onSave, initialData = {} }) {
+  const { register, handleSubmit, reset } = useForm({ defaultValues: initialData });
+  const [howToGo, setHowToGo] = useState(initialData.howToGo || '');
 
   const handleSave = (data) => {
     onSave({ ...data, day });
-    reset();  // Reset the form after saving
   };
 
   return (
@@ -18,7 +17,6 @@ export default function PlannerForm({ day, onSave }) {
         <Typography variant="h6">Day {day}</Typography>
         <form onSubmit={handleSubmit(handleSave)}>
           <Grid container spacing={2}>
-
             {/* Place */}
             <Grid item xs={12}>
               <TextField
@@ -28,7 +26,7 @@ export default function PlannerForm({ day, onSave }) {
               />
             </Grid>
 
-            {/* Time (with a clock selector) */}
+            {/* Time */}
             <Grid item xs={12}>
               <TextField
                 fullWidth

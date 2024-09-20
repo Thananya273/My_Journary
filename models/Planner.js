@@ -8,13 +8,6 @@ const plannerSchema = new mongoose.Schema({
   picture: { type: String },
   activity: { type: String },
   howToGo: { type: String },
-  moneySpent: {
-    travel: { type: Number, default: 0 },
-    hotel: { type: Number, default: 0 },
-    food: { type: Number, default: 0 },
-    shopping: { type: Number, default: 0 },
-    other: { type: Number, default: 0 }
-  },
   reminder: { type: String },
   checklist: [{ type: String }]
 });
