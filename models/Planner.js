@@ -1,16 +1,14 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const plannerSchema = new mongoose.Schema({
-  day: { type: Date, required: true },
   place: { type: String, required: true },
   time: { type: String },
   placeInfo: { type: String },
-  picture: { type: String },
   activity: { type: String },
-  howToGo: { type: String },
   reminder: { type: String },
-  checklist: [{ type: String }]
+  checklist: { type: [String] },
+  tripId: { type: String, required: true },
+  date: { type: Date, required: true },
 });
 
-const Planner = mongoose.models.planner || mongoose.model("planner", plannerSchema);
-module.exports = Planner;
+export default mongoose.models.Planner || mongoose.model('Planner', plannerSchema);

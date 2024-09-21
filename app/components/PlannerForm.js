@@ -1,22 +1,31 @@
 "use client";
 import { useState } from 'react';
-import { Container, Grid, TextField, Button, Card, CardContent, Typography, MenuItem, Select } from '@mui/material';
+import { Grid, TextField, Button, Card, CardContent, Typography, MenuItem, Select } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
-export default function PlannerForm({ day, onSave, initialData = {} }) {
-  const { register, handleSubmit, reset } = useForm({ defaultValues: initialData });
+export default function PlannerForm({ initialData = {}, date, onSave }) {
+  const { register, handleSubmit } = useForm({ defaultValues: initialData });
   const [howToGo, setHowToGo] = useState(initialData.howToGo || '');
 
   const handleSave = (data) => {
-    onSave({ ...data, day });
+    const formattedData = {
+      ...data,
+      // Remove the date conversion since you're selecting the date based on the day
+    };
+    onSave(formattedData);
   };
+  
 
   return (
     <Card sx={{ mt: 2, p: 2 }}>
       <CardContent>
-        <Typography variant="h6">Day {day}</Typography>
         <form onSubmit={handleSubmit(handleSave)}>
           <Grid container spacing={2}>
+            {/* Display the date */}
+            <Grid item xs={12}>
+              <Typography variant="h6">Date: {date}</Typography>
+            </Grid>
+
             {/* Place */}
             <Grid item xs={12}>
               <TextField
@@ -114,7 +123,6 @@ export default function PlannerForm({ day, onSave, initialData = {} }) {
                 Save Plan
               </Button>
             </Grid>
-
           </Grid>
         </form>
       </CardContent>
