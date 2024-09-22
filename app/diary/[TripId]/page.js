@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Container, Typography } from '@mui/material';
 import DiaryCard from '@/app/components/DiaryCard'; // Assuming you have a DiaryCard component
 import DiaryForm from '@/app/components/DiaryForm';
+import DashboardLayout from '@/app/components/MyAppBar';
 
 export default function DiaryPage({ params }) {
   const { TripId } = params; // Use the exact key from params
@@ -69,21 +70,23 @@ export default function DiaryPage({ params }) {
   };
 
   return (
-    <Container sx={{ mt: 4, mb: 4 }}>
-      {trip && (
-        <>
-          <Typography variant="h4" gutterBottom>{trip.name}</Typography>
-          <DiaryForm onSave={handleSaveDiary} />
+    <DashboardLayout>
+      <Container sx={{ mt: 4, mb: 4 }}>
+        {trip && (
+          <>
+            <Typography variant="h4" gutterBottom>{trip.name}</Typography>
+            <DiaryForm onSave={handleSaveDiary} />
 
-          {diaries.length > 0 ? (
-            diaries.map(diary => (
-              <DiaryCard key={diary._id} diary={diary} />
-            ))
-          ) : (
-            <Typography variant="body1">No diary entries found.</Typography>
-          )}
-        </>
-      )}
-    </Container>
+            {diaries.length > 0 ? (
+              diaries.map(diary => (
+                <DiaryCard key={diary._id} diary={diary} />
+              ))
+            ) : (
+              <Typography variant="body1">No diary entries found.</Typography>
+            )}
+          </>
+        )}
+      </Container>
+    </DashboardLayout>
   );
 }

@@ -5,6 +5,7 @@ import PlannerForm from '@/app/components/PlannerForm';
 import TripCard from '@/app/components/TripCard';
 import CustomCalendar from '@/app/components/Calendar';
 import PlannerCard from '@/app/components/PlannerCard';
+import DashboardLayout from '@/app/components/MyAppBar';
 
 export default function PlannerPage({ params }) {
   const { tripId } = params;
@@ -98,46 +99,48 @@ export default function PlannerPage({ params }) {
   console.log("Saved Planners for Day:", savedPlannersForDay);
 
   return (
-    <Container sx={{ mt: 4, mb: 4 }}>
-      {trip && (
-        <>
-          <Typography variant="h4" gutterBottom>{trip.name}</Typography>
-          <TripCard trip={trip} />
-          <CustomCalendar startDate={trip.startDate} endDate={trip.endDate} />
-        </>
-      )}
-
-      <FormControl fullWidth sx={{ mt: 4 }}>
-        <Select
-          value={selectedDay}
-          onChange={(e) => setSelectedDay(e.target.value)}
-        >
-          {Array.from({ length: totalDays() }, (_, index) => (
-            <MenuItem key={index} value={index + 1}>
-              Day {index + 1}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      <Typography variant="h5" sx={{ mt: 4 }}>Daily Plan for Day {selectedDay}</Typography>
-      <PlannerForm
-        initialData={savedPlannersForDay[0] || {}}
-        onSave={handleSavePlanner}
-      />
-
-      <Typography variant="h6" sx={{ mt: 4 }}>Saved Plans:</Typography>
-      <Grid container spacing={2}>
-        {savedPlannersForDay.length > 0 ? (
-          savedPlannersForDay.map(planner => (
-            <Grid item xs={12} sm={6} md={4} key={planner._id}>
-              <PlannerCard planner={planner} onDelete={handleDeletePlanner}/>
-            </Grid>
-          ))
-        ) : (
-          <Typography variant="body1">No plans for this day.</Typography>
+    <DashboardLayout>
+      <Container sx={{ mt: 4, mb: 4 }}>
+        {trip && (
+          <>
+            <Typography variant="h4" gutterBottom>{trip.name}</Typography>
+            <TripCard trip={trip} />
+            <CustomCalendar startDate={trip.startDate} endDate={trip.endDate} />
+          </>
         )}
-      </Grid>
-    </Container>
+
+        <FormControl fullWidth sx={{ mt: 4 }}>
+          <Select
+            value={selectedDay}
+            onChange={(e) => setSelectedDay(e.target.value)}
+          >
+            {Array.from({ length: totalDays() }, (_, index) => (
+              <MenuItem key={index} value={index + 1}>
+                Day {index + 1}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <Typography variant="h5" sx={{ mt: 4 }}>Daily Plan for Day {selectedDay}</Typography>
+        <PlannerForm
+          initialData={savedPlannersForDay[0] || {}}
+          onSave={handleSavePlanner}
+        />
+
+        <Typography variant="h6" sx={{ mt: 4 }}>Saved Plans:</Typography>
+        <Grid container spacing={2}>
+          {savedPlannersForDay.length > 0 ? (
+            savedPlannersForDay.map(planner => (
+              <Grid item xs={12} sm={6} md={4} key={planner._id}>
+                <PlannerCard planner={planner} onDelete={handleDeletePlanner}/>
+              </Grid>
+            ))
+          ) : (
+            <Typography variant="body1">No plans for this day.</Typography>
+          )}
+        </Grid>
+      </Container>
+    </DashboardLayout>
   );
 }
