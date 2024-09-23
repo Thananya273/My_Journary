@@ -1,6 +1,8 @@
 "use client";
 import { useState } from 'react';
 import { TextField, Button, Box, Typography } from '@mui/material';
+import { MoodBadOutlined, SentimentDissatisfiedOutlined, SentimentNeutralOutlined, SentimentSatisfiedOutlined, SentimentVerySatisfiedOutlined } from '@mui/icons-material';
+
 
 const DiaryForm = ({ onSave }) => {
   const [emotion, setEmotion] = useState(null);
@@ -11,25 +13,32 @@ const DiaryForm = ({ onSave }) => {
     e.preventDefault();
     if (emotion !== null && diary) {
       onSave({ emotion, diary, photo });
-      setEmotion(null); // Reset emotion
-      setDiary(''); // Clear diary input
-      setPhoto(''); // Clear photo input
+      setEmotion(null); 
+      setDiary(''); 
+      setPhoto(''); 
     }
   };
+  const emotions = [
+    { num: 1, icon: <MoodBadOutlined />, label: 'Bad' },
+    { num: 2, icon: <SentimentDissatisfiedOutlined />, label: 'Poor' },
+    { num: 3, icon: <SentimentNeutralOutlined />, label: 'Neutral' },
+    { num: 4, icon: <SentimentSatisfiedOutlined />, label: 'Good' },
+    { num: 5, icon: <SentimentVerySatisfiedOutlined />, label: 'Excellent' },
+  ];
 
   return (
     <form onSubmit={handleSubmit}>
       <Box sx={{ mb: 2 }}>
-        <Typography variant="h6">Select Emotion</Typography>
         <Box>
-          {[1, 2, 3, 4, 5].map((num) => (
+          {emotions.map((emotionItem) => (
             <Button
-              key={num}
-              variant={emotion === num ? 'contained' : 'outlined'}
-              onClick={() => setEmotion(num)}
+              key={emotionItem.num}
+              variant={emotion === emotionItem.num ? 'contained' : 'outlined'}
+              onClick={() => setEmotion(emotionItem.num)}
               sx={{ mr: 1 }}
+              aria-label={emotionItem.label} // Add accessible label
             >
-              {num}
+              {emotionItem.icon}
             </Button>
           ))}
         </Box>
