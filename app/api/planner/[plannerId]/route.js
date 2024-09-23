@@ -33,3 +33,26 @@ export async function DELETE(request, { params }) {
     return new Response(JSON.stringify({ message: "Error deleting planner" }), { status: 500 });
   }
 }
+
+// Handle PUT or PATCH requests (to update an existing planner)
+export async function PUT(request, { params }) {
+  const { plannerId } = params;
+  const body = await request.json(); // Get the updated data from the request body
+  
+  try {
+    const updatedPlanner = await Planner.findByIdAndUpdate(
+      plannerId,
+      { $set: body }, // Update fields with the new data
+      { new: true, runValidators: true } // Return the updated document, validate schema
+    );
+    
+    if (!updatedPlanner) {
+      return new Response(JSON.stringify({ message: "Planner not found" }), { status: 404 });
+    }
+    
+    return new Response(JSON.stringify(updatedPlanner), { status: 200 });
+  } catch (error) {
+    console.error("Error updating planner:", error);
+    return new Response(JSON.stringify({ message: "Error updating planner" }), { status: 500 });
+  }
+}

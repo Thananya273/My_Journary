@@ -20,13 +20,3 @@ export async function PUT(request) {
   }
   return new Response(JSON.stringify(trip), { status: 200 });
 }
-
-export async function PATCH(request) {
-  const body = await request.json();
-  const { _id, ...updateData } = body;
-  const trip = await Trip.findByIdAndUpdate(_id, updateData, { new: true });
-  if (!trip) {
-    return new Response("Trip not found", { status: 404 });
-  }
-  return new Response(JSON.stringify(trip), { status: 200 });
-}

@@ -10,7 +10,6 @@ export default function PlannerForm({ initialData = {}, date, onSave }) {
   const handleSave = (data) => {
     const formattedData = {
       ...data,
-      // Remove the date conversion since you're selecting the date based on the day
     };
     onSave(formattedData);
   };

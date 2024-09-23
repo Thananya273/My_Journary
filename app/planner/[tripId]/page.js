@@ -1,10 +1,11 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { Container, Typography, Grid, Select, MenuItem, FormControl } from '@mui/material';
+import { Container, Typography, Grid, Select, MenuItem, FormControl, Divider, Button } from '@mui/material';
 import PlannerForm from '@/app/components/PlannerForm';
 import TripCard from '@/app/components/TripCard';
 import CustomCalendar from '@/app/components/Calendar';
 import PlannerCard from '@/app/components/PlannerCard';
+import PlannerUpdate from '@/app/components/PlannerUpdate'; // Import the new PlannerUpdate component
 import DashboardLayout from '@/app/components/MyAppBar';
 
 export default function PlannerPage({ params }) {
@@ -12,6 +13,9 @@ export default function PlannerPage({ params }) {
   const [trip, setTrip] = useState(null);
   const [planners, setPlanners] = useState([]);
   const [selectedDay, setSelectedDay] = useState(1);
+  const [showForm, setShowForm] = useState(false);
+  const [isEditing, setIsEditing] = useState(false); // State for editing mode
+  const [currentPlanner, setCurrentPlanner] = useState(null); // Currently selected planner for editing
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/trip/${tripId}`)
@@ -35,13 +39,13 @@ export default function PlannerPage({ params }) {
 
   const handleSavePlanner = (plannerData) => {
     if (!trip) return; // Make sure trip data is available
-  
+
     const tripStartDate = new Date(trip.startDate);
     const selectedDate = new Date(tripStartDate);
     selectedDate.setDate(tripStartDate.getDate() + selectedDay - 1);
-    
+
     const dateString = selectedDate.toISOString(); // Convert selected date to ISO string
-  
+
     fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/planner`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -55,9 +59,52 @@ export default function PlannerPage({ params }) {
     })
     .then(newPlanner => {
       setPlanners(prevPlanners => [...prevPlanners, newPlanner]);
+      setShowForm(false); // Hide the form after saving
     })
     .catch(error => {
       console.error("Error saving planner:", error);
+    });
+  };
+
+  const handleEditPlanner = (planner) => {
+    setCurrentPlanner(planner);
+    setShowForm(false); // Hide the add form
+    setIsEditing(true); // Enable editing mode
+  };
+
+  const handleUpdatePlanner = (updatedPlanner) => {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/planner/${updatedPlanner._id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedPlanner),
+    })
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+      return res.json();
+    })
+    .then(updated => {
+      setPlanners(prevPlanners => 
+        prevPlanners.map(planner => (planner._id === updated._id ? updated : planner))
+      );
+      setIsEditing(false); // Exit editing mode
+      setCurrentPlanner(null); // Clear current planner
+    })
+    .catch(error => console.error("Error updating planner:", error));
+  };
+
+  const handleDeletePlanner = (plannerId) => {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/planner/${plannerId}`, {
+      method: "DELETE",
+    })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+      // Remove the deleted planner from the state
+      setPlanners(prevPlanners => prevPlanners.filter(planner => planner._id !== plannerId));
+    })
+    .catch(error => {
+      console.error("Error deleting planner:", error);
     });
   };
 
@@ -79,24 +126,11 @@ export default function PlannerPage({ params }) {
       plannerDate.toDateString() === tripDay.toDateString()
     );
   }) : [];
-  
-  const handleDeletePlanner = (plannerId) => {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/planner/${plannerId}`, {
-      method: "DELETE",
-    })
-    .then(res => {
-      if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
-      }
-      // Remove the deleted planner from the state
-      setPlanners(prevPlanners => prevPlanners.filter(planner => planner._id !== plannerId));
-    })
-    .catch(error => {
-      console.error("Error deleting planner:", error);
-    });
-  };
 
-  console.log("Saved Planners for Day:", savedPlannersForDay);
+  // Sort planners by time
+  const sortedPlanners = savedPlannersForDay.sort((a, b) => {
+    return new Date(`1970-01-01T${a.time}:00`) - new Date(`1970-01-01T${b.time}:00`);
+  });
 
   return (
     <DashboardLayout>
@@ -108,7 +142,6 @@ export default function PlannerPage({ params }) {
             <CustomCalendar startDate={trip.startDate} endDate={trip.endDate} />
           </>
         )}
-
         <FormControl fullWidth sx={{ mt: 4 }}>
           <Select
             value={selectedDay}
@@ -122,24 +155,50 @@ export default function PlannerPage({ params }) {
           </Select>
         </FormControl>
 
-        <Typography variant="h5" sx={{ mt: 4 }}>Daily Plan for Day {selectedDay}</Typography>
-        <PlannerForm
-          initialData={savedPlannersForDay[0] || {}}
-          onSave={handleSavePlanner}
-        />
+        {/* Button to toggle form visibility */}
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mt: 4 }}
+          onClick={() => {
+            setShowForm(!showForm);
+            setIsEditing(false); // Reset editing state
+          }}
+        >
+          {showForm ? 'Back' : '+ ADD Plan'}
+        </Button>
 
-        <Typography variant="h6" sx={{ mt: 4 }}>Saved Plans:</Typography>
-        <Grid container spacing={2}>
-          {savedPlannersForDay.length > 0 ? (
-            savedPlannersForDay.map(planner => (
+        {/* Conditionally render the PlannerForm */}
+        {showForm && !isEditing && (
+          <PlannerForm 
+            onSave={handleSavePlanner} 
+          />
+        )}
+
+        {/* Conditionally render the PlannerUpdate */}
+        {isEditing && currentPlanner && (
+          <PlannerUpdate 
+            planner={currentPlanner} 
+            onSave={handleUpdatePlanner} 
+            onCancel={() => { setIsEditing(false); setCurrentPlanner(null); }} 
+          />
+        )}
+
+        <Typography variant="h5" sx={{ mt: 4 }}>Daily Plan for Day {selectedDay}</Typography>
+        <Divider sx={{ my: 3 }} />
+          {sortedPlanners.length > 0 ? (
+            sortedPlanners.map(planner => (
               <Grid item xs={12} sm={6} md={4} key={planner._id}>
-                <PlannerCard planner={planner} onDelete={handleDeletePlanner}/>
+                <PlannerCard 
+                  planner={planner} 
+                  onDelete={handleDeletePlanner} 
+                  onEdit={handleEditPlanner} // Pass the edit handler
+                />
               </Grid>
             ))
           ) : (
-            <Typography variant="body1">No plans for this day.</Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center' }}>No plans for this day.</Typography>
           )}
-        </Grid>
       </Container>
     </DashboardLayout>
   );

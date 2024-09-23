@@ -1,34 +1,56 @@
 "use client";
-import { Card, CardContent, Typography, IconButton, Divider } from '@mui/material';
+import { Card, CardContent, Typography, IconButton, Divider, Grid } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
-export default function PlannerCard({ planner, onDelete }) {
+export default function PlannerCard({ planner, onDelete, onEdit }) {
   const handleDelete = () => {
     onDelete(planner._id);
   };
 
+  const handleEdit = () => {
+    onEdit(planner);
+  };
+
   return (
-    <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
-      <CardContent>
-        <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-          {planner.place}
-        </Typography>
-        <Divider sx={{ my: 1 }} />
-        <Typography variant="body2" color="text.secondary">Time: {planner.time}</Typography>
-        <Typography variant="body2" color="text.secondary">Place Info: {planner.placeInfo}</Typography>
-        <Typography variant="body2" color="text.secondary">Activity: {planner.activity}</Typography>
-        <Typography variant="body2" color="text.secondary">Reminder: {planner.reminder}</Typography>
-        <Typography variant="body2" color="text.secondary">How to Go: {planner.howToGo || 'N/A'}</Typography>
-        <Typography variant="body2" color="text.secondary">Checklist: {planner.checklist.join(', ') || 'N/A'}</Typography>
-        
-        <IconButton 
-          color="error" 
-          onClick={handleDelete} 
-          sx={{ mt: 2, transition: 'background-color 0.3s', '&:hover': { backgroundColor: 'rgba(255, 0, 0, 0.1)' } }}
-        >
-          <DeleteIcon />
-        </IconButton>
-      </CardContent>
-    </Card>
+    <Grid container spacing={2} sx={{ mb: 2 }}>
+      {/* Left side: Place and Time card */}
+      <Grid item xs={12} sm={3}>
+        <Card sx={{ boxShadow: 3, borderRadius: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+          <CardContent sx={{ textAlign: 'center' }}>
+            <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+              {planner.place}
+            </Typography>
+            <Divider sx={{ my: 2 }} />
+            <Typography variant="h4" color="text.secondary">{planner.time}</Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+
+      {/* Right side: Additional planner information */}
+      <Grid item xs={12} sm={8}>
+        <Card sx={{ boxShadow: 3, borderRadius: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+          <CardContent>
+            <Typography variant="body2" color="text.secondary">Place Info: {planner.placeInfo}</Typography>
+            <Typography variant="body2" color="text.secondary">Activity: {planner.activity}</Typography>
+            <Typography variant="body2" color="text.secondary">Reminder: {planner.reminder}</Typography>
+            <Typography variant="body2" color="text.secondary">How to Go: {planner.howToGo || 'N/A'}</Typography>
+            <Typography variant="body2" color="text.secondary">Checklist: {planner.checklist.join(', ') || 'N/A'}</Typography>
+            
+            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+              {/* Edit Button */}
+              <IconButton color="primary" onClick={handleEdit}>
+                <EditIcon />
+              </IconButton>
+
+              {/* Delete Button */}
+              <IconButton color="error" onClick={handleDelete}>
+                <DeleteIcon />
+              </IconButton>
+            </div>
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
   );
 }
