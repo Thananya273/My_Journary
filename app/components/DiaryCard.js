@@ -1,7 +1,11 @@
 "use client";
 import { Card, CardContent, Typography, Button, CardMedia } from '@mui/material';
 
-const DiaryCard = ({ diary }) => {
+export default function DiaryCard({ diary, onDelete }) {
+  const handleDelete = () => {
+      onDelete(diary._id);
+  };
+
   return (
     <Card sx={{ p: 2, mb: 2 }}>
       {diary.photo && (
@@ -20,9 +24,10 @@ const DiaryCard = ({ diary }) => {
         <Button variant="outlined" color="primary" sx={{ mt: 2 }}>
           View Details
         </Button>
+        <Button variant="outlined" color="error" sx={{ mt: 2, ml: 1 }} onClick={handleDelete}>
+          Delete
+        </Button>
       </CardContent>
     </Card>
   );
-};
-
-export default DiaryCard;
+}

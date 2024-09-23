@@ -67,19 +67,20 @@ export default function DashboardLayout({ children }) {
         </Toolbar>
         <Divider />
         <List>
-          <ListItem button component="a" href="/">
+          <ListItem component="div" onClick={() => window.location.href = '/'}>
             <HomeIcon sx={{ mr: 2 }} />
             {open && <ListItemText primary="Home" />}
           </ListItem>
-          <ListItem button component="a" href="/trip">
+          <ListItem component="div" onClick={() => window.location.href = '/trip'}>
             <TravelExploreIcon sx={{ mr: 2 }} />
             {open && <ListItemText primary="Trips" />}
           </ListItem>
-          <ListItem button component="a" href="/diary">
+          <ListItem component="div" onClick={() => window.location.href = '/diary'}>
             <BookIcon sx={{ mr: 2 }} />
             {open && <ListItemText primary="Diary" />}
           </ListItem>
         </List>
+
       </Drawer>
 
       {/* Main Content Area */}

@@ -14,9 +14,6 @@ export async function GET(request) {
   }
 }
 
-// File: api/diary.js
-
-
 export async function POST(request) {
   try {
     const body = await request.json();

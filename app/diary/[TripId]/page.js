@@ -7,7 +7,7 @@ import DashboardLayout from '@/app/components/MyAppBar';
 
 export default function DiaryPage({ params }) {
   const { TripId } = params; // Use the exact key from params
-  console.log("Trip ID:", TripId); // Now this should log the correct ID
+  console.log("Trip ID:", TripId); // Log the correct ID
   const [trip, setTrip] = useState(null);
   const [diaries, setDiaries] = useState([]);
 
@@ -69,6 +69,23 @@ export default function DiaryPage({ params }) {
       });
   };
 
+  const handleDeleteDiary = (id) => {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/diary/${id}`, { // Adjusted URL to include the ID
+      method: 'DELETE',
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`Error deleting diary: ${res.status}`);
+        }
+        // Update state to remove the deleted diary entry
+        setDiaries(prevDiaries => prevDiaries.filter(diary => diary._id !== id));
+      })
+      .catch(error => {
+        console.error("Error deleting diary:", error);
+      });
+  };
+  
+  
   return (
     <DashboardLayout>
       <Container sx={{ mt: 4, mb: 4 }}>
@@ -79,7 +96,7 @@ export default function DiaryPage({ params }) {
 
             {diaries.length > 0 ? (
               diaries.map(diary => (
-                <DiaryCard key={diary._id} diary={diary} />
+                <DiaryCard key={diary._id} diary={diary} onDelete={handleDeleteDiary} />
               ))
             ) : (
               <Typography variant="body1">No diary entries found.</Typography>
