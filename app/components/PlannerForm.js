@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Grid, TextField, Button, Card, CardContent, Typography, MenuItem, Select } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
-export default function PlannerForm({ initialData = {}, date, onSave }) {
+export default function PlannerForm({ initialData = {}, date, onSave, onCancel }) {
   const { register, handleSubmit } = useForm({ defaultValues: initialData });
   const [howToGo, setHowToGo] = useState(initialData.howToGo || '');
 
@@ -13,7 +13,6 @@ export default function PlannerForm({ initialData = {}, date, onSave }) {
     };
     onSave(formattedData);
   };
-  
 
   return (
     <Card sx={{ mt: 2, p: 2 }}>
@@ -116,10 +115,13 @@ export default function PlannerForm({ initialData = {}, date, onSave }) {
               </Card>
             </Grid>
 
-            {/* Save Button */}
+            {/* Save and Cancel Buttons */}
             <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary">
+              <Button type="submit" variant="contained" color="primary" sx={{ mr: 2 }}>
                 Save Plan
+              </Button>
+              <Button variant="outlined" color="secondary" onClick={onCancel}>
+                Cancel
               </Button>
             </Grid>
           </Grid>

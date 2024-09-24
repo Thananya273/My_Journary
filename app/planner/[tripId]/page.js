@@ -139,7 +139,7 @@ export default function PlannerPage({ params }) {
           <>
             <Typography variant="h4" gutterBottom>{trip.name}</Typography>
             <TripCard trip={trip} />
-            <CustomCalendar startDate={trip.startDate} endDate={trip.endDate} />
+            <CustomCalendar startDate={trip.startDate} endDate={trip.endDate}/>
           </>
         )}
         <FormControl fullWidth sx={{ mt: 4 }}>
@@ -155,23 +155,26 @@ export default function PlannerPage({ params }) {
           </Select>
         </FormControl>
 
-        {/* Button to toggle form visibility */}
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ mt: 4 }}
-          onClick={() => {
-            setShowForm(!showForm);
-            setIsEditing(false); // Reset editing state
-          }}
-        >
-          {showForm ? 'Back' : '+ ADD Plan'}
-        </Button>
+        {/* Button to show form */}
+        {!showForm && (
+           <Button
+           variant="contained"
+           color="primary"
+           sx={{ mt: 4 }}
+           onClick={() => {
+             setShowForm(true); // Show the form directly
+             setIsEditing(false); // Reset editing state
+           }}
+         >
+           + ADD Plan
+         </Button>
+        )}
 
         {/* Conditionally render the PlannerForm */}
         {showForm && !isEditing && (
           <PlannerForm 
             onSave={handleSavePlanner} 
+            onCancel={() => setShowForm(false)} // Hide the form on cancel
           />
         )}
 

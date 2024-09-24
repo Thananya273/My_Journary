@@ -5,6 +5,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import BookIcon from '@mui/icons-material/Book';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import SummarizeIcon from '@mui/icons-material/Summarize';
 import Loading from './Loading'; // Import the Loading component
 
 const drawerWidth = 240;
@@ -67,13 +68,13 @@ export default function DashboardLayout({ children }) {
         </Toolbar>
         <Divider />
         <List>
-          <ListItem component="div" onClick={() => window.location.href = '/'}>
-            <HomeIcon sx={{ mr: 2 }} />
-            {open && <ListItemText primary="Home" />}
-          </ListItem>
           <ListItem component="div" onClick={() => window.location.href = '/trip'}>
             <TravelExploreIcon sx={{ mr: 2 }} />
             {open && <ListItemText primary="Trips" />}
+          </ListItem>
+          <ListItem component="div" onClick={() => window.location.href = '/planner'}>
+            <SummarizeIcon sx={{ mr: 2 }} />
+            {open && <ListItemText primary="Planner" />}
           </ListItem>
           <ListItem component="div" onClick={() => window.location.href = '/diary'}>
             <BookIcon sx={{ mr: 2 }} />
