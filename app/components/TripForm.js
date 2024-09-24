@@ -1,5 +1,5 @@
 // components/TripForm.js
-import { Grid, TextField, Button, Typography } from "@mui/material";
+import { Grid, TextField, Button, Typography, Box } from "@mui/material";
 import { useForm } from "react-hook-form";
 
 export default function TripForm({ onSubmit, onCancel }) {
@@ -15,7 +15,7 @@ export default function TripForm({ onSubmit, onCancel }) {
     <form onSubmit={handleSubmit(handleFormSubmit)} id="tripForm" style={{ marginTop: '2rem' }}>
       <Typography variant="h5" sx={{ mb: 2 }}>Create New Trip</Typography>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12}>
           <TextField
             fullWidth
             label="Trip Name"
@@ -59,16 +59,6 @@ export default function TripForm({ onSubmit, onCancel }) {
             variant="outlined"
           />
         </Grid>
-        <Grid item xs={12}>
-          <TextField
-            fullWidth
-            label="Note"
-            {...register("note")}
-            variant="outlined"
-            multiline
-            rows={4}
-          />
-        </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             fullWidth
@@ -84,20 +74,30 @@ export default function TripForm({ onSubmit, onCancel }) {
             label="Status"
             {...register("status")}
             variant="outlined"
-            multiline
-            rows={2}
             placeholder="Enter statuses separated by commas"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <Button type="submit" variant="contained" color="primary">
-            Add Trip
-          </Button>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Picture"
+            {...register("picture")}
+            variant="outlined"
+          />
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <Button variant="outlined" color="secondary" onClick={onCancel}>
-            Cancel
-          </Button>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Note"
+            {...register("note")}
+            variant="outlined"
+            multiline
+            rows={4}
+          />
+          <Box sx={{ mt: 2 }}>
+            <Button type="submit" variant="contained" color="primary">Save</Button>
+            <Button variant="outlined" color="secondary" onClick={onCancel} sx={{ ml: 2 }}>Cancel</Button>
+          </Box>
         </Grid>
       </Grid>
     </form>

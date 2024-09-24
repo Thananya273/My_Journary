@@ -1,5 +1,5 @@
 "use client";
-import { Grid, Card, CardContent, Typography, Button } from "@mui/material";
+import { Grid, Card, CardContent, CardMedia, Typography, Button } from "@mui/material";
 import Link from "next/link";
 import TripUpdate from '@/app/components/TripUpdate'; // Import the TripUpdate component
 import { useState, useEffect } from "react";
@@ -73,15 +73,23 @@ export default function MyTrip() {
       ) : (
         <Grid container spacing={3}>
           {trips.map((trip) => (
-            <Grid item xs={12} sm={6} md={4} key={trip._id}>
+            <Grid item xs={12} sm={6} md={6} key={trip._id}> {/* Show 2 cards per row */}
               <Card>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={trip.picture && trip.picture.length > 0 ? trip.picture[0] : '/default-image.jpg'} // Fallback image
+                  alt={`Cover for ${trip.name}`}
+                />
                 <CardContent>
                   <Typography variant="h6">{trip.name}</Typography>
                   <Typography variant="subtitle1">{trip.destination}</Typography>
                   <Typography variant="body2">
                     {new Date(trip.startDate).toLocaleDateString()} to {new Date(trip.endDate).toLocaleDateString()}
                   </Typography>
-                  <Typography variant="body2">Note: {trip.note || "No notes listed"}</Typography>
+                  <Typography variant="body2">
+                    Note: {trip.note.length ? trip.note.join(", ") : "No notes listed"}
+                  </Typography>
                   <Link href={`/trip/${trip._id}`} passHref>
                     <Button variant="outlined" sx={{ mt: 2 }}>View Trip</Button>
                   </Link>

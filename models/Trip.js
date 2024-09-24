@@ -9,6 +9,7 @@ const tripSchema = new mongoose.Schema({
   note: [{ type: String }],
   budget: { type: Number },
   status : [{ type: String }],
+  picture : [{ type: String }],
 });
 
 const Trip = mongoose.models.trip || mongoose.model("trip", tripSchema);

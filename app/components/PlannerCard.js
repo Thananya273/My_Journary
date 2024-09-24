@@ -3,7 +3,7 @@ import { Card, CardContent, Typography, IconButton, Divider, Grid } from '@mui/m
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-export default function PlannerCard({ planner, onDelete, onEdit }) {
+export default function PlannerCard({ planner, onDelete, onEdit, showActions }) {
   const handleDelete = () => {
     onDelete(planner._id);
   };
@@ -37,17 +37,18 @@ export default function PlannerCard({ planner, onDelete, onEdit }) {
             <Typography variant="body2" color="text.secondary">How to Go: {planner.howToGo || 'N/A'}</Typography>
             <Typography variant="body2" color="text.secondary">Checklist: {planner.checklist.join(', ') || 'N/A'}</Typography>
             
-            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-              {/* Edit Button */}
-              <IconButton color="primary" onClick={handleEdit}>
-                <EditIcon />
-              </IconButton>
+            {/* Show action buttons only if showActions is true */}
+            {showActions && (
+              <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                <IconButton color="primary" onClick={handleEdit}>
+                  <EditIcon />
+                </IconButton>
 
-              {/* Delete Button */}
-              <IconButton color="error" onClick={handleDelete}>
-                <DeleteIcon />
-              </IconButton>
-            </div>
+                <IconButton color="error" onClick={handleDelete}>
+                  <DeleteIcon />
+                </IconButton>
+              </div>
+            )}
           </CardContent>
         </Card>
       </Grid>

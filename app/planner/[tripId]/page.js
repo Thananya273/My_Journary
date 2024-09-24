@@ -1,11 +1,11 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { Container, Typography, Grid, Select, MenuItem, FormControl, Divider, Button } from '@mui/material';
+import { Container, Typography, Grid, Select, MenuItem, FormControl, Divider, Button, Chip } from '@mui/material';
 import PlannerForm from '@/app/components/PlannerForm';
 import TripCard from '@/app/components/TripCard';
 import CustomCalendar from '@/app/components/Calendar';
 import PlannerCard from '@/app/components/PlannerCard';
-import PlannerUpdate from '@/app/components/PlannerUpdate'; // Import the new PlannerUpdate component
+import PlannerUpdate from '@/app/components/PlannerUpdate';
 import DashboardLayout from '@/app/components/MyAppBar';
 
 export default function PlannerPage({ params }) {
@@ -14,8 +14,8 @@ export default function PlannerPage({ params }) {
   const [planners, setPlanners] = useState([]);
   const [selectedDay, setSelectedDay] = useState(1);
   const [showForm, setShowForm] = useState(false);
-  const [isEditing, setIsEditing] = useState(false); // State for editing mode
-  const [currentPlanner, setCurrentPlanner] = useState(null); // Currently selected planner for editing
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentPlanner, setCurrentPlanner] = useState(null);
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/trip/${tripId}`)
@@ -38,18 +38,18 @@ export default function PlannerPage({ params }) {
   };
 
   const handleSavePlanner = (plannerData) => {
-    if (!trip) return; // Make sure trip data is available
+    if (!trip) return;
 
     const tripStartDate = new Date(trip.startDate);
     const selectedDate = new Date(tripStartDate);
     selectedDate.setDate(tripStartDate.getDate() + selectedDay - 1);
 
-    const dateString = selectedDate.toISOString(); // Convert selected date to ISO string
+    const dateString = selectedDate.toISOString();
 
     fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/planner`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...plannerData, tripId, date: dateString }), // Use the calculated date
+      body: JSON.stringify({ ...plannerData, tripId, date: dateString }),
     })
     .then(res => {
       if (!res.ok) {
@@ -59,7 +59,7 @@ export default function PlannerPage({ params }) {
     })
     .then(newPlanner => {
       setPlanners(prevPlanners => [...prevPlanners, newPlanner]);
-      setShowForm(false); // Hide the form after saving
+      setShowForm(false);
     })
     .catch(error => {
       console.error("Error saving planner:", error);
@@ -68,8 +68,8 @@ export default function PlannerPage({ params }) {
 
   const handleEditPlanner = (planner) => {
     setCurrentPlanner(planner);
-    setShowForm(false); // Hide the add form
-    setIsEditing(true); // Enable editing mode
+    setShowForm(false);
+    setIsEditing(true);
   };
 
   const handleUpdatePlanner = (updatedPlanner) => {
@@ -86,8 +86,8 @@ export default function PlannerPage({ params }) {
       setPlanners(prevPlanners => 
         prevPlanners.map(planner => (planner._id === updated._id ? updated : planner))
       );
-      setIsEditing(false); // Exit editing mode
-      setCurrentPlanner(null); // Clear current planner
+      setIsEditing(false);
+      setCurrentPlanner(null);
     })
     .catch(error => console.error("Error updating planner:", error));
   };
@@ -100,7 +100,6 @@ export default function PlannerPage({ params }) {
       if (!res.ok) {
         throw new Error(`HTTP error! Status: ${res.status}`);
       }
-      // Remove the deleted planner from the state
       setPlanners(prevPlanners => prevPlanners.filter(planner => planner._id !== plannerId));
     })
     .catch(error => {
@@ -115,6 +114,15 @@ export default function PlannerPage({ params }) {
     return Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
   };
 
+  const getDateForSelectedDay = () => {
+    if (!trip) return "";
+    const tripStartDate = new Date(trip.startDate);
+    const selectedDate = new Date(tripStartDate);
+    selectedDate.setDate(tripStartDate.getDate() + selectedDay - 1);
+
+    return selectedDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  };
+
   const savedPlannersForDay = trip ? planners.filter(planner => {
     const plannerDate = new Date(planner.date);
     const tripStartDate = new Date(trip.startDate);
@@ -127,7 +135,6 @@ export default function PlannerPage({ params }) {
     );
   }) : [];
 
-  // Sort planners by time
   const sortedPlanners = savedPlannersForDay.sort((a, b) => {
     return new Date(`1970-01-01T${a.time}:00`) - new Date(`1970-01-01T${b.time}:00`);
   });
@@ -155,30 +162,41 @@ export default function PlannerPage({ params }) {
           </Select>
         </FormControl>
 
-        {/* Button to show form */}
+        {/* Display days in chips */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '16px' }}>
+          {Array.from({ length: totalDays() }, (_, index) => (
+            <Chip 
+              key={index} 
+              label={`Day ${index + 1}`} 
+              variant={selectedDay === index + 1 ? 'filled' : 'outlined'} 
+              color={selectedDay === index + 1 ? 'primary' : 'default'}
+              onClick={() => setSelectedDay(index + 1)} 
+              sx={{ cursor: 'pointer' }} 
+            />
+          ))}
+        </div>
+
         {!showForm && (
-           <Button
-           variant="contained"
-           color="primary"
-           sx={{ mt: 4 }}
-           onClick={() => {
-             setShowForm(true); // Show the form directly
-             setIsEditing(false); // Reset editing state
-           }}
-         >
-           + ADD Plan
-         </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ mt: 4 }}
+            onClick={() => {
+              setShowForm(true);
+              setIsEditing(false);
+            }}
+          >
+            + ADD Plan
+          </Button>
         )}
 
-        {/* Conditionally render the PlannerForm */}
         {showForm && !isEditing && (
           <PlannerForm 
             onSave={handleSavePlanner} 
-            onCancel={() => setShowForm(false)} // Hide the form on cancel
+            onCancel={() => setShowForm(false)} 
           />
         )}
 
-        {/* Conditionally render the PlannerUpdate */}
         {isEditing && currentPlanner && (
           <PlannerUpdate 
             planner={currentPlanner} 
@@ -187,21 +205,24 @@ export default function PlannerPage({ params }) {
           />
         )}
 
-        <Typography variant="h5" sx={{ mt: 4 }}>Daily Plan for Day {selectedDay}</Typography>
+        <Typography variant="h5" sx={{ mt: 4 }}>
+          Date: {getDateForSelectedDay()}
+        </Typography>
         <Divider sx={{ my: 3 }} />
-          {sortedPlanners.length > 0 ? (
-            sortedPlanners.map(planner => (
-              <Grid item xs={12} sm={6} md={4} key={planner._id}>
-                <PlannerCard 
-                  planner={planner} 
-                  onDelete={handleDeletePlanner} 
-                  onEdit={handleEditPlanner} // Pass the edit handler
-                />
-              </Grid>
-            ))
-          ) : (
-            <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center' }}>No plans for this day.</Typography>
-          )}
+        {sortedPlanners.length > 0 ? (
+          sortedPlanners.map(planner => (
+            <Grid item xs={12} sm={6} md={4} key={planner._id}>
+              <PlannerCard 
+                planner={planner} 
+                onDelete={handleDeletePlanner} 
+                onEdit={handleEditPlanner} 
+                showActions={true}
+              />
+            </Grid>
+          ))
+        ) : (
+          <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center' }}>No plans for this day.</Typography>
+        )}
       </Container>
     </DashboardLayout>
   );

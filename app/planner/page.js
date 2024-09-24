@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { Container, Grid, Card, CardContent, Typography, Button } from "@mui/material";
 import Link from "next/link";
 import DashboardLayout from '@/app/components/MyAppBar';
-import TripForm from '@/app/components/TripForm';
 
 export default function Planner() {
   const [trips, setTrips] = useState([]);

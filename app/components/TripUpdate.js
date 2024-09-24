@@ -11,7 +11,8 @@ export default function TripUpdate({ trip, onSave, onCancel }) {
     endDate: '',
     note: '',
     budget: '',
-    status: ''
+    status: '',
+    picture: '',
   });
 
   useEffect(() => {
@@ -25,7 +26,8 @@ export default function TripUpdate({ trip, onSave, onCancel }) {
         endDate: trip.endDate.split('T')[0],
         note: trip.note || '',
         budget: trip.budget || '',
-        status: trip.status || ''
+        status: trip.status || '',
+        picture: trip.picture || ''
       });
     }
   }, [trip]);
@@ -50,7 +52,7 @@ export default function TripUpdate({ trip, onSave, onCancel }) {
     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
       <Typography variant="h5" sx={{ mb: 2 }}>Update Trip</Typography>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12}>
           <TextField
             fullWidth
             label="Trip Name"
@@ -109,18 +111,6 @@ export default function TripUpdate({ trip, onSave, onCancel }) {
             required
           />
         </Grid>
-        <Grid item xs={12}>
-          <TextField
-            fullWidth
-            label="Note"
-            name="note"
-            value={formData.note || ''}
-            onChange={handleChange}
-            variant="outlined"
-            multiline
-            rows={4}
-          />
-        </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
             fullWidth
@@ -140,9 +130,30 @@ export default function TripUpdate({ trip, onSave, onCancel }) {
             value={formData.status || ''}
             onChange={handleChange}
             variant="outlined"
-            multiline
-            rows={2}
             placeholder="Enter statuses separated by commas"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Picture"
+            name="picture"
+            value={formData.picture || ''} // Default to empty string
+            onChange={handleChange}
+            variant="outlined"
+            required
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            label="Note"
+            name="note"
+            value={formData.note || ''}
+            onChange={handleChange}
+            variant="outlined"
+            multiline
+            rows={4}
           />
         </Grid>
       </Grid>
