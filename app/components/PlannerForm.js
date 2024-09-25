@@ -19,27 +19,29 @@ export default function PlannerForm({ initialData = {}, date, onSave, onCancel }
       <CardContent>
         <form onSubmit={handleSubmit(handleSave)}>
           <Grid container spacing={2}>
-            {/* Display the date */}
-            <Grid item xs={12}>
-              <Typography variant="h6">Date: {date}</Typography>
-            </Grid>
-
             {/* Place */}
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Place"
-                {...register('place', { required: true })}
-              />
+            <Grid item xs={12} md={6}>
+                <Typography variant="h6">Place</Typography>
+                <TextField
+                  fullWidth
+                  {...register('place', { required: true })}
+                />
             </Grid>
-
             {/* Time */}
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
+                  <Typography variant="h6">Time</Typography>
+                  <TextField
+                  fullWidth
+                  type="time"
+                  {...register('time', { required: true })}
+                />
+            </Grid>
+             {/* Google map url */}
+             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Time"
-                type="time"
-                {...register('time')}
+                label="Google Maps URL"
+                {...register('GoogleMap')}
               />
             </Grid>
 
@@ -47,78 +49,38 @@ export default function PlannerForm({ initialData = {}, date, onSave, onCancel }
             <Grid item xs={12}>
               <TextField
                 fullWidth
+                multiline
+                rows={4}
                 label="Place Information"
                 {...register('placeInfo')}
               />
             </Grid>
 
             {/* Activity */}
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
+                multiline
+                rows={2}
                 label="Activity"
                 {...register('activity')}
               />
             </Grid>
-
-            {/* How to Go */}
-            <Grid item xs={12}>
-              <Select
-                fullWidth
-                value={howToGo}
-                label="How to Go"
-                onChange={(e) => setHowToGo(e.target.value)}
-              >
-                <MenuItem value="car">Car</MenuItem>
-                <MenuItem value="walk">Walk</MenuItem>
-                <MenuItem value="train">Train</MenuItem>
-                <MenuItem value="plane">Plane</MenuItem>
-                <MenuItem value="other">Other</MenuItem>
-              </Select>
-            </Grid>
-
-            {/* Note for How to Go */}
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Note for How to Go"
-                {...register('howToGoNote')}
-              />
-            </Grid>
-
             {/* Reminder */}
             <Grid item xs={12} md={6}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h6">Reminder</Typography>
-                  <TextField
-                    fullWidth
-                    label="Reminder"
-                    {...register('reminder')}
-                  />
-                </CardContent>
-              </Card>
-            </Grid>
-
-            {/* Checklist */}
-            <Grid item xs={12} md={6}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h6">Checklist</Typography>
-                  <TextField
-                    fullWidth
-                    label="Checklist"
-                    {...register('checklist')}
-                    placeholder="Enter tasks separated by commas"
-                  />
-                </CardContent>
-              </Card>
+              <TextField
+                fullWidth
+                multiline
+                rows={2}
+                label="Reminder"
+                {...register('reminder')}
+              />
             </Grid>
 
             {/* Save and Cancel Buttons */}
             <Grid item xs={12}>
               <Button type="submit" variant="contained" color="primary" sx={{ mr: 2 }}>
-                Save Plan
+                Add Plan
               </Button>
               <Button variant="outlined" color="secondary" onClick={onCancel}>
                 Cancel

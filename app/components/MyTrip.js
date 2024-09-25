@@ -60,7 +60,7 @@ export default function MyTrip() {
   const handleCancelEdit = () => {
     setIsEditing(false); // Hide the edit form
     setSelectedTrip(null); // Clear the selected trip
-  };
+  };;
 
   return (
     <div>
@@ -73,13 +73,13 @@ export default function MyTrip() {
       ) : (
         <Grid container spacing={3}>
           {trips.map((trip) => (
-            <Grid item xs={12} sm={6} md={6} key={trip._id}> {/* Show 2 cards per row */}
+            <Grid item xs={12} sm={6} md={6} key={trip._id}> {/* Adjusting to show 2 cards per row */}
               <Card>
                 <CardMedia
                   component="img"
                   height="140"
-                  image={trip.picture && trip.picture.length > 0 ? trip.picture[0] : '/default-image.jpg'} // Fallback image
-                  alt={`Cover for ${trip.name}`}
+                  image={trip.picture}
+                  alt={`Cover for ${trip.name || 'Trip'}`}
                 />
                 <CardContent>
                   <Typography variant="h6">{trip.name}</Typography>
@@ -87,9 +87,7 @@ export default function MyTrip() {
                   <Typography variant="body2">
                     {new Date(trip.startDate).toLocaleDateString()} to {new Date(trip.endDate).toLocaleDateString()}
                   </Typography>
-                  <Typography variant="body2">
-                    Note: {trip.note.length ? trip.note.join(", ") : "No notes listed"}
-                  </Typography>
+                  <Typography variant="body2">Note: {trip.note.length ? trip.note.join(", ") : "No notes listed"}</Typography>
                   <Link href={`/trip/${trip._id}`} passHref>
                     <Button variant="outlined" sx={{ mt: 2 }}>View Trip</Button>
                   </Link>

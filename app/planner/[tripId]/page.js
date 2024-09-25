@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { Container, Typography, Grid, Select, MenuItem, FormControl, Divider, Button, Chip } from '@mui/material';
+import { Container, Typography, Grid, Select, MenuItem, FormControl, Divider, Button, Chip, ButtonGroup } from '@mui/material';
 import PlannerForm from '@/app/components/PlannerForm';
 import TripCard from '@/app/components/TripCard';
 import CustomCalendar from '@/app/components/Calendar';
@@ -141,46 +141,37 @@ export default function PlannerPage({ params }) {
 
   return (
     <DashboardLayout>
-      <Container sx={{ mt: 4, mb: 4 }}>
-        {trip && (
-          <>
-            <Typography variant="h4" gutterBottom>{trip.name}</Typography>
-            <TripCard trip={trip} />
-            <CustomCalendar startDate={trip.startDate} endDate={trip.endDate}/>
-          </>
-        )}
-        <FormControl fullWidth sx={{ mt: 4 }}>
-          <Select
-            value={selectedDay}
-            onChange={(e) => setSelectedDay(e.target.value)}
-          >
-            {Array.from({ length: totalDays() }, (_, index) => (
-              <MenuItem key={index} value={index + 1}>
-                Day {index + 1}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+    <Container sx={{ mt: 4, mb: 4 }}>
+      {trip && (
+        <>
+          <Typography variant="h4" gutterBottom>{trip.name}</Typography>
+          <TripCard trip={trip} />
+          <CustomCalendar startDate={trip.startDate} endDate={trip.endDate} />
+        </>
+      )}
 
-        {/* Display days in chips */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '16px' }}>
+      {/* Flex container for day buttons and ADD Plan button */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '16px' }}>
+        {/* Button group for selecting days */}
+        <ButtonGroup variant="outlined">
           {Array.from({ length: totalDays() }, (_, index) => (
-            <Chip 
+            <Button 
               key={index} 
-              label={`Day ${index + 1}`} 
-              variant={selectedDay === index + 1 ? 'filled' : 'outlined'} 
+              variant={selectedDay === index + 1 ? 'contained' : 'outlined'} 
               color={selectedDay === index + 1 ? 'primary' : 'default'}
-              onClick={() => setSelectedDay(index + 1)} 
-              sx={{ cursor: 'pointer' }} 
-            />
+              onClick={() => setSelectedDay(index + 1)}
+            >
+              Day {index + 1}
+            </Button>
           ))}
-        </div>
+        </ButtonGroup>
 
+        {/* ADD Plan button */}
         {!showForm && (
           <Button
             variant="contained"
             color="primary"
-            sx={{ mt: 4 }}
+            sx={{ ml: 2 }} // Add margin-left for spacing
             onClick={() => {
               setShowForm(true);
               setIsEditing(false);
@@ -189,41 +180,43 @@ export default function PlannerPage({ params }) {
             + ADD Plan
           </Button>
         )}
+      </div>
 
-        {showForm && !isEditing && (
-          <PlannerForm 
-            onSave={handleSavePlanner} 
-            onCancel={() => setShowForm(false)} 
-          />
-        )}
+      {showForm && !isEditing && (
+        <PlannerForm 
+          onSave={handleSavePlanner} 
+          onCancel={() => setShowForm(false)} 
+        />
+      )}
 
-        {isEditing && currentPlanner && (
-          <PlannerUpdate 
-            planner={currentPlanner} 
-            onSave={handleUpdatePlanner} 
-            onCancel={() => { setIsEditing(false); setCurrentPlanner(null); }} 
-          />
-        )}
+      {isEditing && currentPlanner && (
+        <PlannerUpdate 
+          planner={currentPlanner} 
+          onSave={handleUpdatePlanner} 
+          onCancel={() => { setIsEditing(false); setCurrentPlanner(null); }} 
+        />
+      )}
 
-        <Typography variant="h5" sx={{ mt: 4 }}>
-          Date: {getDateForSelectedDay()}
-        </Typography>
-        <Divider sx={{ my: 3 }} />
-        {sortedPlanners.length > 0 ? (
-          sortedPlanners.map(planner => (
-            <Grid item xs={12} sm={6} md={4} key={planner._id}>
-              <PlannerCard 
-                planner={planner} 
-                onDelete={handleDeletePlanner} 
-                onEdit={handleEditPlanner} 
-                showActions={true}
-              />
-            </Grid>
-          ))
-        ) : (
-          <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center' }}>No plans for this day.</Typography>
-        )}
-      </Container>
-    </DashboardLayout>
+      <Typography variant="h5" sx={{ mt: 4 }}>
+        Date: {getDateForSelectedDay()}
+      </Typography>
+      <Divider sx={{ my: 3 }} />
+      {sortedPlanners.length > 0 ? (
+        sortedPlanners.map(planner => (
+          <Grid item xs={12} sm={6} md={4} key={planner._id}>
+            <PlannerCard 
+              planner={planner} 
+              onDelete={handleDeletePlanner} 
+              onEdit={handleEditPlanner} 
+              showActions={true}
+              showEdit={true}
+            />
+          </Grid>
+        ))
+      ) : (
+        <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center' }}>No plans for this day.</Typography>
+      )}
+    </Container>
+  </DashboardLayout>
   );
 }

@@ -141,7 +141,6 @@ export default function TripUpdate({ trip, onSave, onCancel }) {
             value={formData.picture || ''} // Default to empty string
             onChange={handleChange}
             variant="outlined"
-            required
           />
         </Grid>
         <Grid item xs={12}>

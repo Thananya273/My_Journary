@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Container, Grid, Card, CardContent, Typography, Button } from "@mui/material";
 import Link from "next/link";
 import DashboardLayout from '@/app/components/MyAppBar';
+import TripForm from '@/app/components/TripForm';
 
 export default function Planner() {
   const [trips, setTrips] = useState([]);
@@ -18,29 +19,6 @@ export default function Planner() {
   useEffect(() => {
     fetchTrips();
   }, []);
-
-  // Create a new trip
-  function createTrip(data) {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/trip`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then(async (response) => {
-        const result = await response.json();
-        if (response.ok) {
-          fetchTrips();
-          setShowForm(false); // Close form after trip creation
-        } else {
-          console.error("Failed to create trip:", result);
-        }
-      })
-      .catch((error) => {
-        console.error("Error while creating trip:", error);
-      });
-  }
 
   return (
     <DashboardLayout>
