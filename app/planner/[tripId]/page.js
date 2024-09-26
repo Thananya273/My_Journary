@@ -7,6 +7,7 @@ import CustomCalendar from '@/app/components/Calendar';
 import PlannerCard from '@/app/components/PlannerCard';
 import PlannerUpdate from '@/app/components/PlannerUpdate';
 import DashboardLayout from '@/app/components/MyAppBar';
+import { Card } from 'react-bootstrap';
 
 export default function PlannerPage({ params }) {
   const { tripId } = params;

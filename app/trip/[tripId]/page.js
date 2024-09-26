@@ -1,10 +1,13 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { Container, Typography, Grid, Divider, ButtonGroup, Button } from '@mui/material';
+import Slider from 'react-slick'; // Import Slider from react-slick
 import TripCard from '@/app/components/TripCard'; // Import TripCard component
 import PlannerCard from '@/app/components/PlannerCard'; // Import PlannerCard component
 import DiaryCard from '@/app/components/DiaryCard'; // Import DiaryCard component
 import DashboardLayout from '@/app/components/MyAppBar'; // Import the layout component
+import 'slick-carousel/slick/slick.css'; 
+import 'slick-carousel/slick/slick-theme.css'; 
 
 export default function TripPage({ params }) {
   const { tripId } = params; // Get tripId from params
@@ -39,7 +42,7 @@ export default function TripPage({ params }) {
       });
   }, [tripId]); // Re-fetch when tripId changes
 
-  // Fetch the diary data based on tripId (assumes there's an API endpoint for diaries)
+  // Fetch the diary data based on tripId
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/diary?tripId=${tripId}`)
       .then((res) => res.json())
@@ -80,11 +83,18 @@ export default function TripPage({ params }) {
   if (!trip) {
     // Display a message while loading or if trip data is unavailable
     return (
-      <Typography variant="h6" sx={{ textAlign: 'center', mt: 4 }}>
-        Loading trip data...
-      </Typography>
+      <DashboardLayout></DashboardLayout>
     );
   }
+
+  // Slider settings
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 2, // Show 2 cards at a time
+    slidesToScroll: 1,
+  };
 
   return (
     <DashboardLayout>
@@ -137,25 +147,28 @@ export default function TripPage({ params }) {
             )}
           </div>
         ) : (
-          <div style={{ marginTop: '24px' }}>
-            <Typography variant="h5" gutterBottom>
+          <div>
+             <Typography variant="h5" gutterBottom>
               Diaries
             </Typography>
             <Divider sx={{ mb: 2 }} />
+            <div style={{ marginTop: '24px', backgroundColor: '#3C5B6F', padding: '16px', borderRadius: '8px' }}> {/* Add background color and styling */}
+            <Divider sx={{ mb: 2 }} />
             {diaries.length > 0 ? (
-              <Grid container spacing={2}>
+              <Slider {...sliderSettings}>
                 {diaries.map((diary) => (
-                  <Grid item xs={12} key={diary._id}>
-                    <DiaryCard diary={diary}
-                    showActions={false} /> {/* Pass diary data to the DiaryCard component */}
-                  </Grid>
+                  <div key={diary._id}>
+                    <DiaryCard diary={diary} showActions={false} /> {/* Pass diary data to the DiaryCard component */}
+                  </div>
                 ))}
-              </Grid>
+              </Slider>
             ) : (
               <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', mt: 4 }}>
                 No diaries for this trip yet.
               </Typography>
             )}
+          </div>
+
           </div>
         )}
       </Container>

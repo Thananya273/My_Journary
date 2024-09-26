@@ -100,6 +100,7 @@ export default function TripForm({ onSubmit, onCancel }) {
           </Box>
         </Grid>
       </Grid>
+      <br></br>
     </form>
   );
 }

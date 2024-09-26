@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Drawer, List, ListItem, ListItemText, Box, CssBaseline, Divider } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Typography, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Box, CssBaseline, Divider } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import HomeIcon from '@mui/icons-material/Home';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import BookIcon from '@mui/icons-material/Book';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
@@ -35,14 +34,27 @@ export default function DashboardLayout({ children }) {
       <CssBaseline />
 
       {/* AppBar */}
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#1976d2' }}>
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#153448' }}>
         <Toolbar>
-          <IconButton color="inherit" edge="start" onClick={toggleDrawer} sx={{ mr: 2 }}>
-            {open ? <MenuOpenIcon /> : <MenuIcon />}
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            My Travel Planner
-          </Typography>
+        <IconButton
+          onClick={toggleDrawer}
+          sx={{ 
+            mr: 2, 
+            color: '#EAD8B1' // Apply the color here
+          }}
+        >
+          {open ? <MenuOpenIcon /> : <MenuIcon />}
+        </IconButton>
+        <Typography
+          variant="h6"
+          noWrap
+          component="div"
+          sx={{ 
+            color: '#EAD8B1' // Apply the color here
+          }}
+        >
+          MY JOURNARY
+        </Typography>
           <Box sx={{ flexGrow: 1 }} />
         </Toolbar>
       </AppBar>
@@ -58,6 +70,7 @@ export default function DashboardLayout({ children }) {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
+            backgroundColor: '#f5f5f5', // Lighter background for drawer
           },
         }}
       >
@@ -68,24 +81,39 @@ export default function DashboardLayout({ children }) {
         </Toolbar>
         <Divider />
         <List>
-          <ListItem component="div" onClick={() => window.location.href = '/trip'}>
-            <TravelExploreIcon sx={{ mr: 2 }} />
+          <ListItemButton component="div" onClick={() => window.location.href = '/trip'} sx={{ px: 2 }}>
+            <ListItemIcon>
+              <TravelExploreIcon />
+            </ListItemIcon>
             {open && <ListItemText primary="Trips" />}
-          </ListItem>
-          <ListItem component="div" onClick={() => window.location.href = '/planner'}>
-            <SummarizeIcon sx={{ mr: 2 }} />
-            {open && <ListItemText primary="Planner" />}
-          </ListItem>
-          <ListItem component="div" onClick={() => window.location.href = '/diary'}>
-            <BookIcon sx={{ mr: 2 }} />
-            {open && <ListItemText primary="Diary" />}
-          </ListItem>
-        </List>
+          </ListItemButton>
 
+          <ListItemButton component="div" onClick={() => window.location.href = '/planner'} sx={{ px: 2 }}>
+            <ListItemIcon>
+              <SummarizeIcon />
+            </ListItemIcon>
+            {open && <ListItemText primary="Planner" />}
+          </ListItemButton>
+
+          <ListItemButton component="div" onClick={() => window.location.href = '/diary'} sx={{ px: 2 }}>
+            <ListItemIcon>
+              <BookIcon />
+            </ListItemIcon>
+            {open && <ListItemText primary="Diary" />}
+          </ListItemButton>
+        </List>
       </Drawer>
 
       {/* Main Content Area */}
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          transition: 'margin 0.3s',
+          marginRight: !open ? `${drawerWidth}px` : '0', // Adjust margin based on drawer state
+        }}
+      >
         <Toolbar />
         {dataLoading ? <Loading /> : children} {/* Show loading only for data */}
       </Box>
