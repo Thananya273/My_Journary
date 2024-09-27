@@ -59,7 +59,7 @@ export default function TripForm({ onSubmit, onCancel }) {
             variant="outlined"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={2}>
           <TextField
             fullWidth
             label="Budget"
@@ -68,21 +68,13 @@ export default function TripForm({ onSubmit, onCancel }) {
             variant="outlined"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            fullWidth
-            label="Status"
-            {...register("status")}
-            variant="outlined"
-            placeholder="Enter statuses separated by commas"
-          />
-        </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={10}>
           <TextField
             fullWidth
             label="Picture"
             {...register("picture")}
             variant="outlined"
+            placeholder="Enter picture url"
           />
         </Grid>
         <Grid item xs={12}>

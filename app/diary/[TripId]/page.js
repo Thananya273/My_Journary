@@ -9,7 +9,6 @@ import DashboardLayout from '@/app/components/MyAppBar';
 import 'slick-carousel/slick/slick.css'; 
 import 'slick-carousel/slick/slick-theme.css'; 
 
-
 export default function DiaryPage({ params }) {
   const { TripId } = params; // Use the exact key from params
   const [trip, setTrip] = useState(null);
@@ -108,11 +107,10 @@ export default function DiaryPage({ params }) {
               <Grid container justifyContent="space-between" alignItems="center" sx={{ my: 2 }}>
                 <Button 
                   variant="contained" 
-                  color="primary" 
                   onClick={() => setIsAdding(true)}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 2, backgroundColor: '#EAD8B1', color: '#153448'}}
                 >
-                  Add Diary
+                  + Add Diary
                 </Button>
               </Grid>
             )}
@@ -128,26 +126,39 @@ export default function DiaryPage({ params }) {
             )}
 
             <Divider sx={{ my: 3 }} />
-
-            <Box sx={{ backgroundColor: '#3C5B6F', p: 2, borderRadius: '8px' }}>
-              <Slider {...settings}>
-                {diaries.length > 0 ? (
-                  diaries.map(diary => (
+              {diaries.length === 0 ? (
+                <Grid item xs={12}>
+                  <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center' }}>
+                    No diary entries found.
+                  </Typography>
+                </Grid>
+              ) : diaries.length === 1 ? (
+                <Box sx={{ backgroundColor: '#3C5B6F', p: 2, borderRadius: '8px' }}>
+                <Grid container justifyContent="flex-start" alignItems="center"> {/* Left-align when only one card */}
+                  <Grid item xs={12} sm={6}>
+                    <DiaryCard
+                      diary={diaries[0]}
+                      onDelete={handleDeleteDiary}
+                      onEdit={handleEditDiary}
+                    />
+                  </Grid>
+                </Grid>
+                </Box>
+              ) : (
+                <Box sx={{ backgroundColor: '#3C5B6F', p: 2, borderRadius: '8px' }}>
+                <Slider {...settings}>
+                  {diaries.map(diary => (
                     <div key={diary._id}>
-                      <DiaryCard 
-                        diary={diary} 
-                        onDelete={handleDeleteDiary} 
-                        onEdit={handleEditDiary} 
+                      <DiaryCard
+                        diary={diary}
+                        onDelete={handleDeleteDiary}
+                        onEdit={handleEditDiary}
                       />
                     </div>
-                  ))
-                ) : (
-                  <Grid item xs={12}>
-                    <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center' }}>No diary entries found.</Typography>
-                  </Grid>
-                )}
-              </Slider>
-            </Box>
+                  ))}
+                </Slider>
+                </Box>
+              )}
           </>
         )}
       </Container>

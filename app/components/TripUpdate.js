@@ -111,7 +111,7 @@ export default function TripUpdate({ trip, onSave, onCancel }) {
             required
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={2}>
           <TextField
             fullWidth
             label="Budget"
@@ -122,18 +122,7 @@ export default function TripUpdate({ trip, onSave, onCancel }) {
             variant="outlined"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            fullWidth
-            label="Status"
-            name="status"
-            value={formData.status || ''}
-            onChange={handleChange}
-            variant="outlined"
-            placeholder="Enter statuses separated by commas"
-          />
-        </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={10}>
           <TextField
             fullWidth
             label="Picture"
@@ -141,6 +130,7 @@ export default function TripUpdate({ trip, onSave, onCancel }) {
             value={formData.picture || ''} // Default to empty string
             onChange={handleChange}
             variant="outlined"
+            placeholder="Enter picture url"
           />
         </Grid>
         <Grid item xs={12}>

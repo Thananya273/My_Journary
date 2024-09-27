@@ -61,6 +61,7 @@ const DiaryForm = ({ onSave, tripId, onCancel }) => {
   const [place, setPlace] = useState('');
   const [places, setPlaces] = useState([]);
   const [date, setDate] = useState(''); // State for date
+  const [errorMessage, setErrorMessage] = useState(''); // State for error message
   
   useEffect(() => {
     const fetchPlaces = async () => {
@@ -81,18 +82,28 @@ const DiaryForm = ({ onSave, tripId, onCancel }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (emotion !== null && diary && date && place) {
+    // Check if place and emotion are selected
+    if (!place || !emotion) {
+      setErrorMessage('Please select a place and an emotion.'); // Set error message
+      return; // Exit the function
+    }
+    
+    // Proceed if all required fields are filled
+    if (diary && date) {
       onSave({ emotion, diary, photo, place, date });
+      // Reset form fields
       setEmotion(null); 
       setDiary(''); 
       setPhoto(''); 
       setPlace(''); // Reset place selection
       setDate(''); // Reset date
+      setErrorMessage(''); // Clear error message
     }
   };
 
   const handleChipClick = (placeItem) => {
     setPlace(placeItem); // Set selected place
+    setErrorMessage(''); // Clear error message when a place is clicked
   };
 
   return (
@@ -108,6 +119,12 @@ const DiaryForm = ({ onSave, tripId, onCancel }) => {
           />
         ))}
       </Box>
+
+      {errorMessage && (
+        <Typography variant="body2" color="error" sx={{ mb: 2 }}>
+          {errorMessage}
+        </Typography>
+      )}
 
       <Grid container spacing={2}>
         <Grid item xs={10}>
@@ -134,6 +151,7 @@ const DiaryForm = ({ onSave, tripId, onCancel }) => {
               highlightSelectedOnly
               onChange={(event, newValue) => {
                 setEmotion(newValue); // Set the selected emotion
+                setErrorMessage(''); // Clear error message when an emotion is selected
               }}
             />
           </Box>

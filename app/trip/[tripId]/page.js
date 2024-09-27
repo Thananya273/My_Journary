@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
-import { Container, Typography, Grid, Divider, ButtonGroup, Button } from '@mui/material';
+import { Container, Typography, Grid, Divider, ButtonGroup, Button, Box } from '@mui/material';
 import Slider from 'react-slick'; // Import Slider from react-slick
 import TripCard from '@/app/components/TripCard'; // Import TripCard component
 import PlannerCard from '@/app/components/PlannerCard'; // Import PlannerCard component
@@ -8,6 +8,8 @@ import DiaryCard from '@/app/components/DiaryCard'; // Import DiaryCard componen
 import DashboardLayout from '@/app/components/MyAppBar'; // Import the layout component
 import 'slick-carousel/slick/slick.css'; 
 import 'slick-carousel/slick/slick-theme.css'; 
+import Link from "next/link";
+import KeyboardDoubleArrowRightOutlinedIcon from '@mui/icons-material/KeyboardDoubleArrowRightOutlined';
 
 export default function TripPage({ params }) {
   const { tripId } = params; // Get tripId from params
@@ -35,7 +37,10 @@ export default function TripPage({ params }) {
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched Planner Data:", data);
-        setPlanners(data.filter(planner => planner.tripId === tripId)); // Filter planners for the current tripId
+        const filteredPlanners = data.filter(planner => planner.tripId === tripId);
+        // Sort planners by date and time
+        filteredPlanners.sort((a, b) => new Date(a.date) - new Date(b.date));
+        setPlanners(filteredPlanners); // Set sorted planner data
       })
       .catch((error) => {
         console.error("Error fetching planners:", error);
@@ -69,7 +74,7 @@ export default function TripPage({ params }) {
   const groupPlannersByDate = () => {
     const grouped = {};
     planners.forEach((planner) => {
-      const date = new Date(planner.date).toDateString();
+      const date = new Date(planner.date).toDateString(); // Get only the date part
       if (!grouped[date]) {
         grouped[date] = [];
       }
@@ -83,7 +88,9 @@ export default function TripPage({ params }) {
   if (!trip) {
     // Display a message while loading or if trip data is unavailable
     return (
-      <DashboardLayout></DashboardLayout>
+      <DashboardLayout>
+        {/* Add a loading state or a message here if needed */}
+      </DashboardLayout>
     );
   }
 
@@ -103,38 +110,64 @@ export default function TripPage({ params }) {
         <Typography variant="h4" gutterBottom>
           {trip.name}
         </Typography>
-        <TripCard trip={trip} /> {/* Display the trip details using the TripCard component */}
+        <TripCard trip={trip} />
 
         {/* Button Group to toggle between planners and diaries */}
-        <ButtonGroup variant="outlined" sx={{ mt: 2, mb: 2 }}>
-          <Button onClick={() => setShowPlanners(true)} color={showPlanners ? 'primary' : 'default'}>
-            Planners
-          </Button>
-          <Button onClick={() => setShowPlanners(false)} color={!showPlanners ? 'primary' : 'default'}>
-            Diaries
-          </Button>
-        </ButtonGroup>
+        <Grid container justifyContent="center" sx={{ mt: 2, mb: 2 }}>
+          <Grid item xs={12} md={6}>
+            <ButtonGroup fullWidth sx={{ mt: 2, mb: 2 }}>
+              <Button 
+                onClick={() => setShowPlanners(true)} 
+                sx={{ 
+                  flex: 1, 
+                  backgroundColor: showPlanners ? '#3C5B6F' : '#ffffff', 
+                  color: showPlanners ? 'white' : '#3C5B6F', 
+                  '&:hover': {
+                    backgroundColor: showPlanners ? '#2C434D' : '#3C5B6F',
+                  },
+                }}
+              >
+                Planners
+              </Button>
+              <Button 
+                onClick={() => setShowPlanners(false)} 
+                sx={{ 
+                  flex: 1, 
+                  backgroundColor: !showPlanners ? '#3C5B6F' : '#ffffff', 
+                  color: !showPlanners ? 'white' : '#3C5B6F',
+                  '&:hover': {
+                    backgroundColor: !showPlanners ? '#2C434D' : '#3C5B6F',
+                  },
+                }}
+              >
+                Diaries
+              </Button>
+            </ButtonGroup>
+          </Grid>
+        </Grid>
 
         {/* Display planners or diary entries based on toggle state */}
         {showPlanners ? (
           <div style={{ marginTop: '24px' }}>
-            <Typography variant="h5" gutterBottom>
-              Planners
-            </Typography>
+            <Link href={`/planner/${trip._id}`} passHref>
+              <Typography variant="h5" gutterBottom sx={{ color: '#3C5B6F', display: 'inline-flex', alignItems: 'center' }}>
+                Planner <KeyboardDoubleArrowRightOutlinedIcon /><span style={{ marginLeft: '8px' }}></span>
+              </Typography>
+            </Link>
             <Divider sx={{ mb: 2 }} />
             {Object.keys(plannersByDate).length > 0 ? (
               <Grid container spacing={2}>
                 {Object.keys(plannersByDate).map((date) => (
                   <Grid item xs={12} key={date}>
                     <Typography variant="h6" gutterBottom>
-                      Date: {formatDate(date)} {/* Show the date in Day Month Year format */}
+                      Date: {formatDate(date)}
                     </Typography>
                     <Divider sx={{ mb: 2 }} />
                     {plannersByDate[date].map((planner) => (
                       <PlannerCard
                         key={planner._id}
-                        planner={planner} // Pass the planner data to the PlannerCard component
-                        showActions={false} // Assuming you want to hide edit/delete buttons here
+                        planner={planner}
+                        showActions={false}
                       />
                     ))}
                   </Grid>
@@ -148,27 +181,43 @@ export default function TripPage({ params }) {
           </div>
         ) : (
           <div>
-             <Typography variant="h5" gutterBottom>
-              Diaries
-            </Typography>
-            <Divider sx={{ mb: 2 }} />
-            <div style={{ marginTop: '24px', backgroundColor: '#3C5B6F', padding: '16px', borderRadius: '8px' }}> {/* Add background color and styling */}
-            <Divider sx={{ mb: 2 }} />
-            {diaries.length > 0 ? (
-              <Slider {...sliderSettings}>
-                {diaries.map((diary) => (
-                  <div key={diary._id}>
-                    <DiaryCard diary={diary} showActions={false} /> {/* Pass diary data to the DiaryCard component */}
-                  </div>
-                ))}
-              </Slider>
-            ) : (
-              <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', mt: 4 }}>
-                No diaries for this trip yet.
+            <Link href={`/diary/${trip._id}`} passHref>
+              <Typography variant="h5" gutterBottom sx={{ color: '#3C5B6F', display: 'inline-flex', alignItems: 'center' }}>
+                Diary <KeyboardDoubleArrowRightOutlinedIcon /> <span style={{ marginLeft: '8px' }}></span>
               </Typography>
+            </Link>
+            <Divider sx={{ mb: 2 }} />
+            {diaries.length === 0 ? (
+              <Grid item xs={12}>
+                <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center' }}>
+                  No diary entries found.
+                </Typography>
+              </Grid>
+            ) : diaries.length === 1 ? (
+              <Box sx={{ backgroundColor: '#3C5B6F', p: 2, borderRadius: '8px' }}>
+                <Grid container justifyContent="flex-start" alignItems="center">
+                  <Grid item xs={12} sm={6}>
+                    <DiaryCard
+                      diary={diaries[0]}
+                      showActions={false}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
+            ) : (
+              <Box sx={{ backgroundColor: '#3C5B6F', p: 2, borderRadius: '8px' }}>
+                <Slider {...sliderSettings}>
+                  {diaries.map(diary => (
+                    <div key={diary._id}>
+                      <DiaryCard
+                        diary={diary}
+                        showActions={false}
+                      />
+                    </div>
+                  ))}
+                </Slider>
+              </Box>
             )}
-          </div>
-
           </div>
         )}
       </Container>

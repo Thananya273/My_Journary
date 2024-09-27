@@ -14,5 +14,11 @@
 }
 
 .highlight {
-  background-color: #C4FF7E !important; /* Change this to your preferred color */
+  background-color: #DFD0B8 !important; /* Change this to match the TripCard color */
+}
+
+.today {
+  background-color: #3C5B6F !important; /* Set 'today' to dark blue */
+  color: #ffffff !important; /* Optional: Change text color to white for better visibility */
+ 
 }

@@ -3,10 +3,10 @@ import mongoose from 'mongoose';
 
 const diarySchema = new mongoose.Schema({
   tripId: { type: String, required: true },
-  place: { type: String, required: true },
-  emotion: { type: Number, required: true },
+  place: { type: String, required: false },
+  emotion: { type: Number, required: false },
   diary: { type: String, required: true },
-  photo: { type: String, required: false },
+  photo: { type: String},
   date: { type: Date, required: true }
 });
 

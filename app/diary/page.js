@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Container, Grid, Card, CardContent, Typography, IconButton, Box } from "@mui/material";
+import { Container, Grid, Card, CardContent, Typography, IconButton, Box, Divider } from "@mui/material";
 import MailIcon from "@mui/icons-material/Mail";
 import Link from "next/link";
 import DashboardLayout from '@/app/components/MyAppBar';
@@ -24,8 +24,9 @@ export default function Diary() {
       <Container>
         {/* My Diary Section */}
         <Grid container justifyContent="space-between" alignItems="center" sx={{ my: 2 }}>
-          <Typography variant="h4">My Diary</Typography>
+          <Typography variant="h2" align="center" gutterBottom color="#3C5B6F">My Diary</Typography>
         </Grid>
+        <Divider sx={{ my: 3 }} />
 
         {/* Trip Cards */}
         <Grid container spacing={3}>
@@ -46,7 +47,7 @@ export default function Diary() {
                     <IconButton sx={{ p: 0 }}>
                       <Box
                         sx={{
-                          backgroundColor: '#003944', // Light pink background
+                          backgroundColor: '#153448',
                           borderRadius: '50%', // Circle shape
                           padding: 2,
                           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', // Shadow for 3D effect
@@ -59,7 +60,7 @@ export default function Diary() {
                           alignItems: 'center',
                         }}
                       >
-                        <MailIcon sx={{ fontSize: 100, color: '#ffffff' }} /> {/* Playful pink color */}
+                        <MailIcon sx={{ fontSize: 100, color: '#ebddc7' }} />
                       </Box>
                     </IconButton>
                   </Link>

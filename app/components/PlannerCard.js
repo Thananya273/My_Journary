@@ -5,6 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import MapIcon from '@mui/icons-material/Map';
 import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import 'typeface-inter';
 
 export default function PlannerCard({ planner, onDelete, onEdit, showActions, showEdit }) {
   const [showMap, setShowMap] = useState(false); // State to toggle map visibility
@@ -37,13 +38,13 @@ export default function PlannerCard({ planner, onDelete, onEdit, showActions, sh
     <Grid container spacing={2} sx={{ mb: 2 }}>
       {/* Left side: Place and Time card */}
       <Grid item xs={12} sm={4}>
-        <Card sx={{ boxShadow: 3, borderRadius: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+        <Card sx={{ boxShadow: 3, borderRadius: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', backgroundColor: '#335063'}}>
           <CardContent sx={{ textAlign: 'center' }}>
-            <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+            <Typography variant="h5" sx={{ color: '#EAD8B1', fontFamily: 'monospace'}}>
               {planner.place}
             </Typography>
-            <Divider sx={{ my: 2 }} />
-            <Typography variant="h4" color="text.secondary">{planner.time}</Typography>
+            <Divider sx={{ my: 2, backgroundColor: '#ffffff' }} />
+            <Typography variant="h4" color="#EAD8B1">{planner.time}</Typography>
           </CardContent>
         </Card>
       </Grid>
@@ -51,7 +52,7 @@ export default function PlannerCard({ planner, onDelete, onEdit, showActions, sh
       {/* Right side: Additional planner information or Google Map */}
       <Grid item xs={12} sm={8}>
         {showMap ? (
-          <Card sx={{ boxShadow: 3, borderRadius: 2, height: '100%' }}>
+          <Card sx={{ boxShadow: 3, borderRadius: 2, height: '100%', backgroundColor: '#fcfbf2'}}>
             <CardContent>
               <iframe
                 src={googleMapEmbedUrl}
@@ -69,18 +70,18 @@ export default function PlannerCard({ planner, onDelete, onEdit, showActions, sh
             </CardContent>
           </Card>
         ) : (
-          <Card sx={{ boxShadow: 3, borderRadius: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+          <Card sx={{ boxShadow: 3, borderRadius: 2, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%', backgroundColor: '#fcfbf2' }}>
             <CardContent>
               {/* Top Bar with Edit button and Map button */}
               <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                 {/* Conditionally render MapIcon if GoogleMap is not empty */}
                 {planner.GoogleMap && (
-                  <IconButton color="primary" onClick={handleMapClick} sx={{ marginLeft: 1 }}>
+                  <IconButton color="#153448" onClick={handleMapClick} sx={{ marginLeft: 1 }}>
                     <MapIcon />
                   </IconButton>
                 )}
                 {showEdit && ( // Conditionally render the Edit button
-                  <IconButton color="primary" onClick={handleEditClick} sx={{ marginLeft: 1 }}>
+                  <IconButton color="#153448" onClick={handleEditClick} sx={{ marginLeft: 1 }}>
                     <EditLocationAltIcon />
                   </IconButton>
                 )}

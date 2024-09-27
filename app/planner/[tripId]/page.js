@@ -158,8 +158,14 @@ export default function PlannerPage({ params }) {
           {Array.from({ length: totalDays() }, (_, index) => (
             <Button 
               key={index} 
-              variant={selectedDay === index + 1 ? 'contained' : 'outlined'} 
-              color={selectedDay === index + 1 ? 'primary' : 'default'}
+              sx={{ 
+                flex: 1, 
+                backgroundColor: selectedDay === index + 1 ? '#3C5B6F' : '#ffffff', 
+                color: selectedDay === index + 1 ? 'white' : '#3C5B6F',
+                '&:hover': {
+                  backgroundColor: selectedDay === index + 1 ? 'white' : '#3C5B6F',
+                },
+              }} 
               onClick={() => setSelectedDay(index + 1)}
             >
               Day {index + 1}
@@ -172,7 +178,7 @@ export default function PlannerPage({ params }) {
           <Button
             variant="contained"
             color="primary"
-            sx={{ ml: 2 }} // Add margin-left for spacing
+            sx={{ mb: 2, backgroundColor: '#EAD8B1', color: '#153448'}}
             onClick={() => {
               setShowForm(true);
               setIsEditing(false);
@@ -182,6 +188,7 @@ export default function PlannerPage({ params }) {
           </Button>
         )}
       </div>
+
 
       {showForm && !isEditing && (
         <PlannerForm 

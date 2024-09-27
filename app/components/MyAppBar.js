@@ -36,25 +36,25 @@ export default function DashboardLayout({ children }) {
       {/* AppBar */}
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#153448' }}>
         <Toolbar>
-        <IconButton
-          onClick={toggleDrawer}
-          sx={{ 
-            mr: 2, 
-            color: '#EAD8B1' // Apply the color here
-          }}
-        >
-          {open ? <MenuOpenIcon /> : <MenuIcon />}
-        </IconButton>
-        <Typography
-          variant="h6"
-          noWrap
-          component="div"
-          sx={{ 
-            color: '#EAD8B1' // Apply the color here
-          }}
-        >
-          MY JOURNARY
-        </Typography>
+          <IconButton
+            onClick={toggleDrawer}
+            sx={{ 
+              mr: 2, 
+              color: '#EAD8B1' // Apply the color here
+            }}
+          >
+            {open ? <MenuOpenIcon /> : <MenuIcon />}
+          </IconButton>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ 
+              color: '#EAD8B1' // Apply the color here
+            }}
+          >
+            MY JOURNARY
+          </Typography>
           <Box sx={{ flexGrow: 1 }} />
         </Toolbar>
       </AppBar>
@@ -70,7 +70,7 @@ export default function DashboardLayout({ children }) {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            backgroundColor: '#f5f5f5', // Lighter background for drawer
+            backgroundColor: '#DFD0B8', 
           },
         }}
       >
@@ -83,23 +83,32 @@ export default function DashboardLayout({ children }) {
         <List>
           <ListItemButton component="div" onClick={() => window.location.href = '/trip'} sx={{ px: 2 }}>
             <ListItemIcon>
-              <TravelExploreIcon />
+              <TravelExploreIcon sx={{ color: '#153448' }} />
             </ListItemIcon>
-            {open && <ListItemText primary="Trips" />}
+            {open && <ListItemText 
+              primary="Trips" 
+              primaryTypographyProps={{ sx: { color: '#153448' } }} // Match icon color
+            />}
           </ListItemButton>
 
           <ListItemButton component="div" onClick={() => window.location.href = '/planner'} sx={{ px: 2 }}>
             <ListItemIcon>
-              <SummarizeIcon />
+              <SummarizeIcon sx={{ color: '#153448' }} />
             </ListItemIcon>
-            {open && <ListItemText primary="Planner" />}
+            {open && <ListItemText 
+              primary="Planner" 
+              primaryTypographyProps={{ sx: { color: '#153448' } }} // Match icon color
+            />}
           </ListItemButton>
 
           <ListItemButton component="div" onClick={() => window.location.href = '/diary'} sx={{ px: 2 }}>
             <ListItemIcon>
-              <BookIcon />
+              <BookIcon sx={{ color: '#153448' }} />
             </ListItemIcon>
-            {open && <ListItemText primary="Diary" />}
+            {open && <ListItemText 
+              primary="Diary" 
+              primaryTypographyProps={{ sx: { color: '#153448' } }} // Match icon color
+            />}
           </ListItemButton>
         </List>
       </Drawer>

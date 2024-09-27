@@ -1,6 +1,7 @@
 "use client";
 import { Card, CardContent, Typography, CardMedia, Box, IconButton } from '@mui/material';
 import { MoodBadOutlined, SentimentDissatisfiedOutlined, SentimentNeutralOutlined, SentimentSatisfiedOutlined, SentimentVerySatisfiedOutlined, Edit, Delete } from '@mui/icons-material';
+import 'typeface-inter';
 
 export default function DiaryCard({ diary, onDelete, onEdit, showActions = true }) {
   const handleDelete = () => {
@@ -57,7 +58,7 @@ export default function DiaryCard({ diary, onDelete, onEdit, showActions = true 
               mt: 2, 
               whiteSpace: 'pre-wrap', 
               lineHeight: '21px', 
-              fontFamily: 'monospace', 
+               
               justifyContent: 'space-between',
             }}
           >
@@ -73,7 +74,7 @@ export default function DiaryCard({ diary, onDelete, onEdit, showActions = true 
               fontFamily: 'monospace', 
             }}
           >
-            Date: {new Date(diary.date).toLocaleDateString()}
+            Date: {new Date(diary.date).toLocaleDateString('en-GB')}
         </Typography>
         <Typography 
             variant="body2" 
