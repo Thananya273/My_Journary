@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { TextField, Button, Box, Typography, Chip, Grid } from '@mui/material';
+import { TextField, Button, Box, Typography, Chip, Grid, Link as MuiLink } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Rating from '@mui/material/Rating';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
@@ -9,6 +9,8 @@ import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
+import ArrowRightOutlinedIcon from '@mui/icons-material/ArrowRightOutlined';
 
 const StyledRating = styled(Rating)(({ theme }) => ({
   '& .MuiRating-icon': {
@@ -113,20 +115,37 @@ const DiaryForm = ({ onSave, tripId, onCancel }) => {
           {errorMessage}
         </Typography>
       )}
+
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
         <Typography variant="body1" color="text.secondary" sx={{ mb:1, mr: 2 }}>
           place* :
         </Typography>
         <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-          {places.map((placeItem) => (
-            <Chip
-              key={placeItem}
-              label={placeItem}
-              onClick={() => handleChipClick(placeItem)}
-              color={place === placeItem ? "primary" : "default"}
-              sx={{ mr: 1, mb: 1, cursor: 'pointer' }}
-            />
-          ))}
+          {places.length > 0 ? (
+            places.map((placeItem) => (
+              <Chip
+                key={placeItem}
+                label={placeItem}
+                onClick={() => handleChipClick(placeItem)}
+                color={place === placeItem ? "primary" : "default"}
+                sx={{ mr: 1, mb: 1, cursor: 'pointer' }}
+              />
+            ))
+          ) : (
+            <Typography variant="body2" color="text.secondary">
+              No places available. <MuiLink 
+                component={Link}
+                href={`/planner/${tripId}`} 
+                sx={{
+                  textDecoration: 'underline', 
+                  color: '#3C5B6F',
+                  cursor: 'pointer',
+                }}
+              >
+                Click here to plan<ArrowRightOutlinedIcon/>
+              </MuiLink>
+            </Typography>
+          )}
         </Box>
       </Box>
 
