@@ -108,23 +108,27 @@ const DiaryForm = ({ onSave, tripId, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Box sx={{ mb: 2 }}>
-        {places.map((placeItem) => (
-          <Chip 
-            key={placeItem} 
-            label={placeItem} 
-            onClick={() => handleChipClick(placeItem)} 
-            color={place === placeItem ? "primary" : "default"}
-            sx={{ mr: 1, mb: 1, cursor: 'pointer' }}
-          />
-        ))}
-      </Box>
-
-      {errorMessage && (
-        <Typography variant="body2" color="error" sx={{ mb: 2 }}>
+       {errorMessage && (
+        <Typography variant="body1" color="error" sx={{ mb: 2 }}>
           {errorMessage}
         </Typography>
       )}
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+        <Typography variant="body1" color="text.secondary" sx={{ mb:1, mr: 2 }}>
+          place* :
+        </Typography>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+          {places.map((placeItem) => (
+            <Chip
+              key={placeItem}
+              label={placeItem}
+              onClick={() => handleChipClick(placeItem)}
+              color={place === placeItem ? "primary" : "default"}
+              sx={{ mr: 1, mb: 1, cursor: 'pointer' }}
+            />
+          ))}
+        </Box>
+      </Box>
 
       <Grid container spacing={2}>
         <Grid item xs={10}>
@@ -145,7 +149,6 @@ const DiaryForm = ({ onSave, tripId, onCancel }) => {
           <Box sx={{ mt: 1 }}> {/* Move rating down with margin */}
             <StyledRating
               name="emotion-rating"
-              defaultValue={4}
               IconContainerComponent={IconContainer}
               getLabelText={(value) => customIcons[value].label}
               highlightSelectedOnly

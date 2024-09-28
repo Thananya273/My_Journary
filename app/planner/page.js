@@ -60,10 +60,10 @@ export default function Planner() {
                         {new Date(trip.startDate).toLocaleDateString('en-GB')} - {new Date(trip.endDate).toLocaleDateString('en-GB')}
                       </Typography>
                       <Typography variant="body2">
-                        Budget: {trip.budget ? `${trip.budget} THB` : 'Not Specified'}
+                        Budget: {trip.budget ? `${trip.budget} THB` : '-'}
                       </Typography>
                       <Typography variant="body2">
-                        Note: {trip.note || "No notes available"}
+                        Note: {trip.note != '' ? trip.note : "No notes"}
                       </Typography>
                     </CardContent>
                   </Card>

@@ -163,7 +163,7 @@ export default function PlannerPage({ params }) {
                 backgroundColor: selectedDay === index + 1 ? '#3C5B6F' : '#ffffff', 
                 color: selectedDay === index + 1 ? 'white' : '#3C5B6F',
                 '&:hover': {
-                  backgroundColor: selectedDay === index + 1 ? 'white' : '#3C5B6F',
+                  backgroundColor: selectedDay === index + 1 ? '#153448' : '#fcfbf2',
                 },
               }} 
               onClick={() => setSelectedDay(index + 1)}

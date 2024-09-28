@@ -57,7 +57,7 @@ const TripCard = ({ trip }) => {
                   <EventIcon sx={{ verticalAlign: 'middle', mr: 1, color: '#DFD0B8' }} /> Dates
                 </Typography>
                 <Typography variant="body1" sx={{ color: '#DFD0B8' }}>
-                  {new Date(trip.startDate).toLocaleDateString()} - {new Date(trip.endDate).toLocaleDateString()}
+                  {new Date(trip.startDate).toLocaleDateString('en-GB')} - {new Date(trip.endDate).toLocaleDateString('en-GB')}
                 </Typography>
               </Grid>
             </Grid>

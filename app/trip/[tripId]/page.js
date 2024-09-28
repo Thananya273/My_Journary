@@ -123,7 +123,7 @@ export default function TripPage({ params }) {
                   backgroundColor: showPlanners ? '#3C5B6F' : '#ffffff', 
                   color: showPlanners ? 'white' : '#3C5B6F', 
                   '&:hover': {
-                    backgroundColor: showPlanners ? '#2C434D' : '#3C5B6F',
+                    backgroundColor: showPlanners ? '#153448' : '#fcfbf2',
                   },
                 }}
               >
@@ -136,7 +136,7 @@ export default function TripPage({ params }) {
                   backgroundColor: !showPlanners ? '#3C5B6F' : '#ffffff', 
                   color: !showPlanners ? 'white' : '#3C5B6F',
                   '&:hover': {
-                    backgroundColor: !showPlanners ? '#2C434D' : '#3C5B6F',
+                    backgroundColor: !showPlanners ? '#153448' : '#fcfbf2',
                   },
                 }}
               >
