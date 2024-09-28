@@ -106,6 +106,21 @@ There are 3 parts in Trip page.
 - click pencil to edit and click bin to delete.
 > ![My_Journary-14](https://github.com/user-attachments/assets/299b7c64-52c7-4e57-8d1e-d0572ef3dc11)
 
+## How to get image URL
+1. serch image on google
+2. right click the picuture
+3. click "copy Image Address" or click "open Image in New Tab" and copy the link
+> ![Get_picture_url](https://github.com/user-attachments/assets/48bf8453-6095-4262-bd93-54a1b1ec6886)
+
+## How to get Google maps embed URL
+1. choose place
+2. click share
+3. choose "Embed a map" and click "copy HTML'
+4. it should look like this
+"<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3877.5853642933707!2d100.84803581124942!3d13.622117286701117!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d4306fed8263d%3A0x36375aeed51f8ea7!2sSoi%20Abac%2C%20Chang%20Wat%20Samut%20Prakan!5e0!3m2!1sen!2sth!4v1727542425115!5m2!1sen!2sth" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>"
+5. copy src and done!
+> ![Get_map_url](https://github.com/user-attachments/assets/412b4527-cf35-44af-9b6a-4618e254287c)
+
 
 # Blog App
 Next.js 14
