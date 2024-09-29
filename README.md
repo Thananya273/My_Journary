@@ -6,6 +6,9 @@ By Thananya Amornwiriya ID: 6610609 section 542
 2. Planner: place, time, date, placeInfo, activity, reminder, GoogleMap, tripId
 3. Diary: place, date, emotion, diary, photo, tripId
 
+# How to use My Journary
+video explanation: https://youtu.be/KZAB_-l8qJM
+
 There are 3 pages: Trip, Planner, Diary
 ## 1. Trip page
 (Menu can be hidden by click the menu icon)
