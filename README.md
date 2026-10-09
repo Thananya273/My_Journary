@@ -7,6 +7,7 @@ By Thananya Amornwiriya ID: 6610609 section 542
 3. Diary: place, date, emotion, diary, photo, tripId
 
 # How to use My Journary
+website: https://my-journary.vercel.app
 video explanation: https://youtu.be/KZAB_-l8qJM
 
 There are 3 pages: Trip, Planner, Diary
